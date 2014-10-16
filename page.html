@@ -2,16 +2,37 @@
 <html>
 	<head>
 		<title>validator tests</title>
+		<style></style>
 	</head>
 	<body ng-app="app">
 		<div ng-controller="formController">
 
 
-			{{validPost}}
-			<ul>
-				<li ng-repeat="item in items">{{item}}</li>
-			</ul>
+            <form role="form" name="Form" novalidate="">
 
+            	<b>Name: </b> <input ng-model="post.name"/> <br/>
+            	<b>Email: </b> <input ng-model="post.email"/> <br/>
+            	<b>Title: </b> <input ng-model="post.title"/> <br/><br/>
+
+            	<b>Comments: </b>
+
+            	<button ng-click="addComment()">Add Comment</button><br/><br/>
+
+            	<div ng-repeat="comment in post.comments">
+	            	Message: <input ng-model="comment.message"/><br/>
+            		Date: <input ng-model="comment.date"/><br/>
+            		<button ng-click="deleteComment($index)">Delete</button><br/><br/>
+            	</div>
+
+            </form>
+
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+
+			{{validPost}}
 
 		</div>
 	</body>
