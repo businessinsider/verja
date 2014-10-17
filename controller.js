@@ -16,7 +16,7 @@ app
 			title: 'this-title-doesn\'t exist'
 		};
 
-		$scope.validPost = Validator.validate($scope.post);
+		$scope.validPost = Validator.validatePost($scope.post);
 
 		$scope.addComment = function() {
 			$scope.post.comments.push({date: Date.now(), message: ''});
@@ -29,13 +29,43 @@ app
 	})
 	.service('Validator', function() {
 
-		function validate(obj) {
+		var goodPost = {
+			name: 'some kinda string',
+			email: 'validemail@email.com',
+			comments: [{
+				date: Date.now(),
+				message: 'a cool message'
+			}, {
+				date: '1413486500150',
+				message: 'this message was made'
+			}],
+			title: 'this-title-doesn\'t exist'
+		};
+
+		var badPost = {
+			name: false,
+			comments: ['string comment', {name: 'worse comment'}],
+			title: 'a unique title'
+		};
+
+		// var post = schema({
+		// 	name: String,
+		// 	email: String,
+		// 	comments: Array.of(comment)
+		// });
+
+		// var comment = schema({
+		// 	date: Number,
+		// 	'*': String
+		// });
+
+		function validatePost(obj) {
 			obj.validated = true;
 			return obj;
 		}
 
 		return {
-			validate: validate
+			validatePost: validatePost
 		}
 
 	});
