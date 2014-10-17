@@ -4,7 +4,7 @@
 // var schema = {username: {type: String, email: true, onlyChars: ['x','y','z']]}}
 
 
-(function(window, undefined) {
+(function(undefined) {
 
 	function log(str) {
 		console.log(str, eval(str));
@@ -12,19 +12,35 @@
 
 	var validators = {
 		type: function(val, config, callback) {
+
+
+
 			var invalid = false;
 			callback(invalid);
 		},
 		required: function(val, config, callback) {
-			var invalid = false;
-			callback(invalid);
+			if (!val) {
+				callback(true);
+				return;
+			}
+			callback(false);
 		},
 		maxlength: function(val, config, callback) {
-			var invalid = true;
+			var invalid;
+			if (val.length > config) {
+				invalid = true;
+			} else {
+				invalid = false;
+			}
 			callback(invalid);
 		},
 		minlength: function(val, config, callback) {
-			var invalid = false;
+			var invalid;
+			if (val.length < config) {
+				invalid = true;
+			} else {
+				invalid = false;
+			}
 			callback(invalid);
 		}
 	};
@@ -39,7 +55,7 @@
 
 		for (var k1 in schema) {
 			for (var k2 in schema[k1]) {
-				validators[k2](object[k1], schema[k2], function(x) {
+				validators[k2](object[k1], schema[k1][k2], function(x) {
 					if (x) {
 						if (!errors[k1]) errors[k1] = new Object();
 						errors[k1][k2] = x;
@@ -56,32 +72,72 @@
 		//when all done callback
 	}
 
-	var exposed = {
-		addValidator: addValidator,
-		validate: validate
-	};
-	window.Validator = window.Validator || exposed;
-})(window);
-
-
-Validator.addValidator('email', function(val) {
-	return true;
-});
-
-var obj = {
-	name: 'some too long name',
-	email: 'forrest.alamsi@gmail.com'
-};
-var scheme = {
-	name: {
-		type: String,
-		maxlength: 5
-	},
-	email: {
-		type: Date
+	function Field(props) {
+		for (var prop in props) {
+			this[prop] = props[prop];
+		}
 	}
-};
 
-Validator.validate(obj, scheme, function(err) {
-	console.log(err);
-});
+	exports = {
+		addValidator: addValidator,
+		validate: validate,
+		Field: Field
+	};
+
+	if (typeof window !== 'undefined') {
+		window.Validator = window.Validator || exports;
+	} else {
+		module.exports = exports;
+	}
+
+})();
+
+
+// Validator.addValidator('email', function(val) {
+// 	return true;
+// });
+
+// var obj = {
+// 	name: 'some too long name',
+// 	email: 'forrest.alamsi@gmail.com'
+// };
+// var scheme = {
+// 	name: new Validator.Field({
+// 		type: String,
+// 		maxlength: 5
+// 	}),
+// 	email: new Validator.Field({
+// 		type: String,
+// 		minlength: 4,
+// 	}),
+// 	date: new Validator.Field({
+// 		required: true,
+// 		type: Date
+// 	})
+// };
+
+// var schema2 = {
+// 	car: {
+// 		type: {
+// 			make: new Validator.Field({
+// 				type: String,
+// 				minlength: 3
+// 			})
+// 		}
+// 	}
+// }
+
+// var my240 = {
+// 	car: {
+// 		type: {
+// 			make: 'Volvo'
+// 		}
+// 	}
+// };
+
+
+
+
+// Validator.validate(obj, scheme, function(err) {
+// 	console.log(err);
+// });
