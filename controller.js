@@ -47,18 +47,7 @@ app
 			comments: ['string comment', {name: 'worse comment'}],
 			title: 'a unique title'
 		};
-
-		// var post = schema({
-		// 	name: String,
-		// 	email: String,
-		// 	comments: Array.of(comment)
-		// });
-
-		// var comment = schema({
-		// 	date: Number,
-		// 	'*': String
-		// });
-
+		
 		function validatePost(obj) {
 			obj.validated = true;
 			return obj;

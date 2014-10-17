@@ -14,7 +14,6 @@
 		type: function(val, config, callback) {
 
 
-
 			var invalid = false;
 			callback(invalid);
 		},
@@ -46,7 +45,13 @@
 	};
 
 	function addValidator(name, func) {
-		validators[name] = func;
+		validators[name] = function(val, config, callback) {
+			if (func(val)) {
+				callback(true);
+				return;
+			}
+			callback(false);
+		};
 	}
 
 	function validate(object, schema, callback) {
@@ -92,52 +97,3 @@
 
 })();
 
-
-// Validator.addValidator('email', function(val) {
-// 	return true;
-// });
-
-// var obj = {
-// 	name: 'some too long name',
-// 	email: 'forrest.alamsi@gmail.com'
-// };
-// var scheme = {
-// 	name: new Validator.Field({
-// 		type: String,
-// 		maxlength: 5
-// 	}),
-// 	email: new Validator.Field({
-// 		type: String,
-// 		minlength: 4,
-// 	}),
-// 	date: new Validator.Field({
-// 		required: true,
-// 		type: Date
-// 	})
-// };
-
-// var schema2 = {
-// 	car: {
-// 		type: {
-// 			make: new Validator.Field({
-// 				type: String,
-// 				minlength: 3
-// 			})
-// 		}
-// 	}
-// }
-
-// var my240 = {
-// 	car: {
-// 		type: {
-// 			make: 'Volvo'
-// 		}
-// 	}
-// };
-
-
-
-
-// Validator.validate(obj, scheme, function(err) {
-// 	console.log(err);
-// });
