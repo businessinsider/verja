@@ -9,6 +9,7 @@ var obj = {
 	name: 'some too long name',
 	email: 'forrest.alamsi@gmail.com'
 };
+
 var scheme = {
 	name: new validator.Field({
 		type: String,
@@ -46,5 +47,9 @@ var my240 = {
 
 
 validator.validate(obj, scheme, function(err) {
+	console.log(err);
+});
+
+validator.validate(my240, schema2, function(err) {
 	console.log(err);
 });

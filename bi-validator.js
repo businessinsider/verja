@@ -54,23 +54,33 @@
 		};
 	}
 
+
 	function validate(object, schema, callback) {
 
 		var errors = new Object;
 
-		for (var k1 in schema) {
-			for (var k2 in schema[k1]) {
-				validators[k2](object[k1], schema[k1][k2], function(x) {
-					if (x) {
-						if (!errors[k1]) errors[k1] = new Object();
-						errors[k1][k2] = x;
+
+		function runValidators (sch) {
+			for (var k1 in sch) {
+
+				if (sch[k1].prototype !== new Field().prototype) {
+					runValidators(sch[k1])
+				} else {
+					for (var k2 in sch[k1]) {
+						validators[k2](object[k1], sch[k1][k2], function(x) { //fix this line for recursion
+							if (x) {
+								if (!errors[k1]) errors[k1] = new Object();
+								errors[k1][k2] = x;
+							}
+						});
 					}
-				});
+				}
 			}
 		}
 
-		console.log(errors);
+		runValidators(schema);
 
+		callback(errors);
 		//for each prop on schema, call the validator
 		//recurse if type Array or is an Object
 		//track how many are done
@@ -83,9 +93,10 @@
 		}
 	}
 
-	exports = {
+	var exports = {
 		addValidator: addValidator,
 		validate: validate,
+		validators: validators,
 		Field: Field
 	};
 

@@ -1,3 +1,5 @@
+'use strict';
+
 var assert = require('assert');
 var validator = require('../bi-validator');
 
@@ -15,20 +17,15 @@ describe('validator', function() {
 		};
 
 		var obj = {};
-		var errObj = {};
+		var errObj;
 
 		validator.validate(obj, schema, function(err) {
-			console.log('err',err);
 			errObj = err;
 		});
 
-
 		it('addValidator adds a validator', function() {
-			console.log('errObj',errObj);
-
-			assert.equal(true, errObj.key);
+			assert.equal(true, errObj.key.haskey);
 		});
-
 
 	});
 
