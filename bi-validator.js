@@ -5,10 +5,6 @@
 
 	'use strict';
 
-	function log(str) {
-		console.log(str, eval(str));
-	}
-
 	var validators = {
 		//takes lower case string of type for config
 		type: function(val, config, callback) {
@@ -68,7 +64,6 @@
 			for (var k in sch) {
 
 				if (!(sch[k] instanceof Field)) {
-					console.log('this runs');
 					runValidators(sch[k], obj[k]);
 				} else {
 					for (var k2 in sch[k]) {

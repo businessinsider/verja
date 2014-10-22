@@ -51,19 +51,22 @@ describe('validator', function() {
 
 		var goodNest = {
 			key: {
-				key2: 'value'
+				str: 'value',
+				obj: {}
 			}
 		};
 
 		var badNest = {
 			key: {
-				key2: []
+				str: [],
+				obj: null
 			}
 		};
 
 		var nestSchema = {
 			key: {
-				key2: new validator.Field({type: 'string'})
+				str: new validator.Field({type: 'string'}),
+				obj: new validator.Field({type: 'object'})
 			}
 		};
 
@@ -81,8 +84,9 @@ describe('validator', function() {
 			validator.validate(badNest, nestSchema, function(e) {
 				errObj = e;
 			});
-			
-			assert.equal(errObj.key2.type, true);
+
+			assert.equal(errObj.key.str.type, true);
+			assert.equal(errObj.key.obj.type, true);
 		});
 	});
 
