@@ -53,7 +53,8 @@ describe('validator', function() {
 			key: {
 				str: 'value',
 				obj: {}
-			}
+			},
+			key2: true
 		};
 
 		var badNest = {
@@ -67,8 +68,24 @@ describe('validator', function() {
 			key: {
 				str: new validator.Field({type: 'string'}),
 				obj: new validator.Field({type: 'object'})
-			}
+			},
+			key2: new validator.Field({required: true, type: 'boolean'})
 		};
+
+		it('should validate an array', function() {
+			var errObj;
+			var objArr = {
+				key: ['string', {}]
+			};
+			var arrSch = {
+				key: [new validator.Field({type: 'string'})]
+			};
+			validator.validate(objArr,arrSch, function(e) {
+				errObj = e;
+			});
+
+			assert.equal(errObj, {key: {'1': {type:true}}});
+		});
 
 		it('should validate simple nested objects (valid example)', function() {
 			var errObj;
@@ -88,6 +105,7 @@ describe('validator', function() {
 			assert.equal(errObj.key.str.type, true);
 			assert.equal(errObj.key.obj.type, true);
 		});
+
 	});
 
 });
