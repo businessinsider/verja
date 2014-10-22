@@ -1,3 +1,5 @@
+'use strict';
+
 var validator = require('./bi-validator');
 
 validator.addValidator('email', function(val) {
@@ -35,7 +37,7 @@ var schema2 = {
 			})
 		}
 	}
-}
+};
 
 var my240 = {
 	car: {

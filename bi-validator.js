@@ -6,6 +6,8 @@
 
 (function(undefined) {
 
+	'use strict';
+
 	function log(str) {
 		console.log(str, eval(str));
 	}
@@ -57,20 +59,20 @@
 
 	function validate(object, schema, callback) {
 
-		var errors = new Object;
+		var errors = new Object();
 
 
-		function runValidators (sch) {
-			for (var k1 in sch) {
+		function runValidators (sch, obj) {
+			for (var k in sch) {
 
-				if (sch[k1].prototype !== new Field().prototype) {
-					runValidators(sch[k1])
+				if (sch[k].prototype !== new Field().prototype) {
+					runValidators(sch[k], obj[k]);
 				} else {
-					for (var k2 in sch[k1]) {
-						validators[k2](object[k1], sch[k1][k2], function(x) { //fix this line for recursion
+					for (var k2 in sch[k]) {
+						validators[k2](obj[k], sch[k][k2], function(x) { //fix this line for recursion
 							if (x) {
-								if (!errors[k1]) errors[k1] = new Object();
-								errors[k1][k2] = x;
+								if (!errors[k]) errors[k] = new Object();
+								errors[k][k2] = x;
 							}
 						});
 					}
@@ -78,7 +80,7 @@
 			}
 		}
 
-		runValidators(schema);
+		runValidators(schema, object);
 
 		callback(errors);
 		//for each prop on schema, call the validator
