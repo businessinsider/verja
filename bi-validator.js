@@ -54,54 +54,51 @@
 			callback(false);
 		};
 	}
+	
+	function runValidators(object,schema,errors,errorTotal) {
+		//if the schema is a field validate the property
+		if (schema instanceof Field) {
+			Object.keys(schema).forEach(function(validatorName){
+				//call the validator
+				function validatorCallback(invalid) {
+					if (invalid) {
+						errors[validatorName] = true;
+						errorTotal.total++;
+					}
+				}
+				validators[validatorName](object, schema[validatorName], validatorCallback);
+			});
+		}
+		//if its an array recurse over all the values in the object
+		else if (schema instanceof Array && object instanceof Array) {
+			object.forEach(function(arrayValue, index){
+				if (!errors[index]) { errors[index] = {}; }
+				runValidators(object[index], schema[0], errors[index], errorTotal);
+			});
+		}
+		//otherwise go through the keys on the schema and recurse
+		else if (schema instanceof Object && object instanceof Object) {
+			Object.keys(schema).forEach(function(property){
+				if (!errors[property]) { errors[property] = {}; }
+				runValidators(object[property], schema[property], errors[property], errorTotal);
+			});
+		} else {
+			//this should never happen, if it does, we aren't handling an object/schema construction error properly
+			throw new Error('Internal Validation error for ', object,schema,errors,errorTotal);
+		}
+	}
 
 	function validate(object, schema, callback) {
+		var errors = {};
+		var errorTotal = {total: 0};
 
-		var errors = new Object();
+		runValidators(object, schema, errors, errorTotal);
 
-
-		function runValidators (obj, sch) {
-			for (var k in sch) {
-				if (sch[k] instanceof Field) {
-					for (var k2 in sch[k]) {
-						validators[k2](obj[k], sch[k][k2], function(x) {
-							if (x) {
-								if (!errors[k]) errors[k] = new Object();
-								errors[k][k2] = x;
-							}
-						});
-					}
-				} else if (Array.isArray(sch[k]) && sch[k][0] instanceof Field) {
-					var arraySchema = sch[k][0];
-					var i = 0;
-					for (var k2 in arraySchema) {
-						i++;
-						validators[k2](obj[k][i], sch[k][k2], function(x) {
-							if (x) {
-								if (!errors[k]) errors[k] = new Object();
-								if (!errors[k][i]) errors[k][i] = new Object();
-								errors[k][i][k2] = x;
-							}
-						});
-					}
-				} else {
-					runValidators(sch[k], obj[k]);
-				}
-			}
-		}
-
-		runValidators(object, schema);
-
-		if (Object.keys(errors).length === 0) {
-			callback(null);
-			return;
+		if (!errorTotal.total) {
+			return callback(null);
 		}
 		
 		callback(errors);
-		//for each prop on schema, call the validator
-		//recurse if type Array or is an Object
-		//track how many are done
-		//when all done callback
 	}
 
 	function Field(props) {
