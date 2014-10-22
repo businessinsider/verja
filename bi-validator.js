@@ -1,8 +1,5 @@
-// Validator.addValidator('onlyChars', function(val, config){return true;})
-
 // var schema = {username: {type: String, email: true, onlyChars: ['a','b','c']]}}
 // var schema = {username: {type: String, email: true, onlyChars: ['x','y','z']]}}
-
 
 (function(undefined) {
 
@@ -13,11 +10,17 @@
 	}
 
 	var validators = {
+		//takes lower case string of type for config
 		type: function(val, config, callback) {
+			var valtype = Object.prototype.toString.call(val);
+			valtype = valtype.substr(8, valtype.length - 9).toLowerCase();
 
+			if (valtype === config) {
+				callback(false);
+				return;
+			}
 
-			var invalid = false;
-			callback(invalid);
+			callback(true);
 		},
 		required: function(val, config, callback) {
 			if (!val) {
@@ -55,7 +58,6 @@
 			callback(false);
 		};
 	}
-
 
 	function validate(object, schema, callback) {
 
@@ -109,4 +111,3 @@
 	}
 
 })();
-
