@@ -13,7 +13,7 @@ Built to support complex object structures, deeply nested arrays, and async vali
 Via node
 
 ```
-	var validator = require('./angular-validator/bi-validator');
+	var Validator = require('./angular-validator/bi-validator');
 ```
 
 Or the browser
@@ -31,7 +31,7 @@ A basic example of validating an object by declaring a schema, and calling the v
 	var obj = {
 		property: 'some value'
 	};
-	validator.validate(obj, schema, function(err) {
+	Validator.validate(obj, schema, function(err) {
 		if (err) { return console.log('invalid', err) }
 		return console.log('valid!');
 	});
