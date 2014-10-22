@@ -87,13 +87,20 @@ describe('validator', function() {
 			assert.equal(errObj, {key: {'1': {type:true}}});
 		});
 
-		it('should validate simple nested objects (valid example)', function() {
-			var errObj;
-			validator.validate(goodNest, nestSchema, function(e) {
-				errObj = e;
+		//need to fix the lib so this works
+		it('should validate a primative', function(done) {
+			validator.validate('some string', new validator.Field({type: 'string'}), function(e){
+				if (e) { throw e; }
+				done();
 			});
+		});
 
-			assert.equal(Object.keys(errObj).length, 0);
+		//need to fix the lib so this works
+		it('should validate simple nested objects and return null for errors in the callback', function(done) {
+			validator.validate(goodNest, nestSchema, function(e) {
+				if (e !== null) { throw e; }
+				done();
+			});
 		});
 
 		it('should validate simple nested objects (invalid example)', function() {
@@ -106,6 +113,32 @@ describe('validator', function() {
 			assert.equal(errObj.key.obj.type, true);
 		});
 
+	});
+	
+	//need to fix the lib to return null for no errors so this works
+	describe('validation rule: type', function(){
+		var schema = {
+			property: new validator.Field({type: 'string'})
+		};
+
+		var obj = {
+			property: 'some value'
+		};
+
+		it ('should not throw an error when a string is passed in', function(done){
+			validator.validate(obj, schema, function(err) {
+				if (err) { throw err; }
+				done();
+			});
+		});
+
+		it ('should throw an error when a string is not passed in', function(done){
+			obj.property = [];
+			validator.validate(obj, schema, function(err) {
+				if (err) { return done(); }
+				throw err;
+			});
+		});
 	});
 
 });
