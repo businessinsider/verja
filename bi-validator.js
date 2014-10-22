@@ -92,6 +92,11 @@
 
 		runValidators(object, schema);
 
+		if (Object.keys(errors).length === 0) {
+			callback(null);
+			return;
+		}
+		
 		callback(errors);
 		//for each prop on schema, call the validator
 		//recurse if type Array or is an Object

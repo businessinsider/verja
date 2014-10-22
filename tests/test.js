@@ -116,7 +116,7 @@ describe('validator', function() {
 	});
 	
 	//need to fix the lib to return null for no errors so this works
-	describe('validation rule: type', function(){
+	describe('validation rule: type', function() {
 		var schema = {
 			property: new validator.Field({type: 'string'})
 		};
@@ -125,14 +125,14 @@ describe('validator', function() {
 			property: 'some value'
 		};
 
-		it ('should not throw an error when a string is passed in', function(done){
+		it ('should not throw an error when a string is passed in', function(done) {
 			validator.validate(obj, schema, function(err) {
 				if (err) { throw err; }
 				done();
 			});
 		});
 
-		it ('should throw an error when a string is not passed in', function(done){
+		it ('should throw an error when a string is not passed in', function(done) {
 			obj.property = [];
 			validator.validate(obj, schema, function(err) {
 				if (err) { return done(); }
