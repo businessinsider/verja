@@ -53,7 +53,8 @@ describe('validator', function() {
 			key: {
 				str: 'value',
 				obj: {}
-			}
+			},
+			key2: true
 		};
 
 		var badNest = {
@@ -67,8 +68,24 @@ describe('validator', function() {
 			key: {
 				str: new validator.Field({type: 'string'}),
 				obj: new validator.Field({type: 'object'})
-			}
+			},
+			key2: new validator.Field({required: true, type: 'boolean'})
 		};
+
+		it('should validate an array', function() {
+			var errObj;
+			var objArr = {
+				key: ['string', {}]
+			};
+			var arrSch = {
+				key: [new validator.Field({type: 'string'})]
+			};
+			validator.validate(objArr,arrSch, function(e) {
+				errObj = e;
+			});
+
+			assert.equal(JSON.stringify(errObj), JSON.stringify({key: {'1': {type:true}}}));
+		});
 
 		//need to fix the lib so this works
 		it('should validate a primative', function(done) {
@@ -95,29 +112,33 @@ describe('validator', function() {
 			assert.equal(errObj.key.str.type, true);
 			assert.equal(errObj.key.obj.type, true);
 		});
+
 	});
 	
 	//need to fix the lib to return null for no errors so this works
-	describe('validation rule: type', function(){
+	describe('validation rule: type', function() {
 		var schema = {
 			property: new validator.Field({type: 'string'})
 		};
+
 		var obj = {
 			property: 'some value'
 		};
-		it ('should not throw an error when a string is passed in', function(done){
+
+		it ('should not throw an error when a string is passed in', function(done) {
 			validator.validate(obj, schema, function(err) {
 				if (err) { throw err; }
 				done();
 			});
-		})
-		it ('should throw an error when a string is not passed in', function(done){
+		});
+
+		it ('should throw an error when a string is not passed in', function(done) {
 			obj.property = [];
 			validator.validate(obj, schema, function(err) {
 				if (err) { return done(); }
 				throw err;
 			});
-		})
-	})
+		});
+	});
 
 });

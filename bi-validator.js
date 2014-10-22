@@ -60,26 +60,43 @@
 		var errors = new Object();
 
 
-		function runValidators (sch, obj) {
+		function runValidators (obj, sch) {
 			for (var k in sch) {
-
-				if (!(sch[k] instanceof Field)) {
-					runValidators(sch[k], obj[k]);
-				} else {
+				if (sch[k] instanceof Field) {
 					for (var k2 in sch[k]) {
-						validators[k2](obj[k], sch[k][k2], function(x) { //fix this line for recursion
+						validators[k2](obj[k], sch[k][k2], function(x) {
 							if (x) {
 								if (!errors[k]) errors[k] = new Object();
 								errors[k][k2] = x;
 							}
 						});
 					}
+				} else if (Array.isArray(sch[k]) && sch[k][0] instanceof Field) {
+					var arraySchema = sch[k][0];
+					var i = 0;
+					for (var k2 in arraySchema) {
+						i++;
+						validators[k2](obj[k][i], sch[k][k2], function(x) {
+							if (x) {
+								if (!errors[k]) errors[k] = new Object();
+								if (!errors[k][i]) errors[k][i] = new Object();
+								errors[k][i][k2] = x;
+							}
+						});
+					}
+				} else {
+					runValidators(sch[k], obj[k]);
 				}
 			}
 		}
 
-		runValidators(schema, object);
+		runValidators(object, schema);
 
+		if (Object.keys(errors).length === 0) {
+			callback(null);
+			return;
+		}
+		
 		callback(errors);
 		//for each prop on schema, call the validator
 		//recurse if type Array or is an Object
