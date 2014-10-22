@@ -67,7 +67,8 @@
 		function runValidators (sch, obj) {
 			for (var k in sch) {
 
-				if (sch[k].prototype !== new Field().prototype) {
+				if (!(sch[k] instanceof Field)) {
+					console.log('this runs');
 					runValidators(sch[k], obj[k]);
 				} else {
 					for (var k2 in sch[k]) {

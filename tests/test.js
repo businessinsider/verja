@@ -15,7 +15,6 @@ describe('validator', function() {
 		var schema = {
 			key: new validator.Field({haskey: true})
 		};
-
 		var obj = {};
 		var errObj;
 
@@ -42,10 +41,49 @@ describe('validator', function() {
 			assert.notEqual(obj, field);
 		});
 
+		it('should be able to check if a field is an instance of Field', function() {
+			assert.equal(field instanceof validator.Field, true);
+		});
+
 	});
 
 	describe('validate', function() {
 
+		var goodNest = {
+			key: {
+				key2: 'value'
+			}
+		};
+
+		var badNest = {
+			key: {
+				key2: []
+			}
+		};
+
+		var nestSchema = {
+			key: {
+				key2: new validator.Field({type: 'string'})
+			}
+		};
+
+		it('should validate simple nested objects (valid example)', function() {
+			var errObj;
+			validator.validate(goodNest, nestSchema, function(e) {
+				errObj = e;
+			});
+
+			assert.equal(Object.keys(errObj).length, 0);
+		});
+
+		it('should validate simple nested objects (invalid example)', function() {
+			var errObj;
+			validator.validate(badNest, nestSchema, function(e) {
+				errObj = e;
+			});
+			
+			assert.equal(errObj.key2.type, true);
+		});
 	});
 
 });
