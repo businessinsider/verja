@@ -26,7 +26,7 @@ A basic example of validating an object by declaring a schema, and calling the v
 
 ```
 	var schema = {
-		property: new validator.Field({type: 'string'})
+		property: new Validator.Field({type: 'string'})
 	};
 	var obj = {
 		property: 'some value'
