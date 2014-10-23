@@ -1,6 +1,6 @@
 'use strict';
 
-var validator = require('./bi-validator');
+var validator = require('./schemes');
 
 validator.addValidator('email', function(val) {
 	if (!val) return true;

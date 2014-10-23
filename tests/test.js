@@ -1,7 +1,7 @@
 'use strict';
 
 var assert = require('assert');
-var validator = require('../bi-validator');
+var validator = require('../schemes');
 
 describe('validator', function() {
 	

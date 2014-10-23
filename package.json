@@ -1,4 +1,6 @@
 {
+	"name": "schemes",
+	"version": "0.0.1",
 	"scripts": {
 		"test": "cd tests && mocha" 
 	},

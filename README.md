@@ -6,20 +6,20 @@ Built to support complex object structures, deeply nested arrays, and async vali
 
 ### Install
 
-```git clone https://github.com/malls/angular-validator```
+```git clone https://github.com/malls/schemes```
 
 
 ### Use
 Via node
 
 ```
-	var validator = require('./angular-validator/bi-validator');
+	var validator = require('./schemes');
 ```
 
 Or the browser
 
 ```
-	<script src="/angular-validator/bi-validator.js" type="text/javascript"></script>
+	<script src="/angular-validator/schemes.js" type="text/javascript"></script>
 ```
 
 A basic example of validating an object by declaring a schema, and calling the validate method
