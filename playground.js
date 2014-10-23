@@ -1,6 +1,6 @@
 'use strict';
 
-var validator = require('./schemes');
+var validator = require('./verja');
 
 validator.addValidator('email', function(val) {
 	if (!val) return true;

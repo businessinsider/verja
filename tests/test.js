@@ -1,7 +1,7 @@
 'use strict';
 
 var assert = require('assert');
-var validator = require('../schemes');
+var validator = require('../verja.js');
 
 describe('validator', function() {
 	

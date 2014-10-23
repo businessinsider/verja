@@ -6,20 +6,20 @@ Built to support complex object structures, deeply nested arrays, and async vali
 
 ### Install
 
-```git clone https://github.com/malls/schemes```
+```git clone https://github.com/businessinsider/verja```
 
 
 ### Use
 Via node
 
 ```
-	var validator = require('./schemes');
+	var validator = require('./verja');
 ```
 
 Or the browser
 
 ```
-	<script src="/angular-validator/schemes.js" type="text/javascript"></script>
+	<script src="/angular-validator/verja.js" type="text/javascript"></script>
 ```
 
 A basic example of validating an object by declaring a schema, and calling the validate method
