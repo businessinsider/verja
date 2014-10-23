@@ -31,4 +31,21 @@ describe('validation rules', function() {
 		});
 	});
 
+	describe('async', function() {
+
+	});
+
+	//to do
+	describe('required', function() {
+
+	});
+	
+	describe('maxlength', function() {
+
+	});
+
+	describe('minlength', function() {
+
+	});
+
 });

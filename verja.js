@@ -3,6 +3,9 @@
 	'use strict';
 
 	var validators = {
+		async: function(val, config, callback) {
+			//do something
+		},
 		//takes lower case string of type for config
 		type: function(val, config, callback) {
 			var valtype = Object.prototype.toString.call(val);
@@ -52,18 +55,33 @@
 		};
 	}
 	
+	var validateFuncs = [];
+	var totalValidators = 0;
+	var totalValidated = 0;
+
 	function runValidators(object,schema,errors,errorTotal) {
 		//if the schema is a field validate the property
 		if (schema instanceof Field) {
 			Object.keys(schema).forEach(function(validatorName){
-				//call the validator
-				function validatorCallback(invalid) {
-					if (invalid) {
-						errors[validatorName] = true;
-						errorTotal.total++;
+				validateFuncs.push(function(callback) {
+					//call the validator
+					function validatorCallback(invalid) {
+						if (invalid) {
+							errors[validatorName] = true;
+							errorTotal.total++;
+						}
+						totalValidated++;
+
+						if (totalValidated === totalValidators) {
+							if (!errorTotal.total) {
+								return callback(null);
+							}
+							
+							callback(errors);
+						}
 					}
-				}
-				validators[validatorName](object, schema[validatorName], validatorCallback);
+					validators[validatorName](object, schema[validatorName], validatorCallback);
+				});
 			});
 		}
 		//if its an array recurse over all the values in the object
@@ -90,12 +108,11 @@
 		var errorTotal = {total: 0};
 
 		runValidators(object, schema, errors, errorTotal);
+		totalValidators = validateFuncs.length;
 
-		if (!errorTotal.total) {
-			return callback(null);
-		}
-		
-		callback(errors);
+		validateFuncs.forEach(function(func){
+			func(callback);
+		});
 	}
 
 	function Field(props) {
