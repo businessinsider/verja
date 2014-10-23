@@ -1,4 +1,4 @@
-BI's Declarative Object Validator
+Verja - BI's Declarative Object Validator
 =================================
 
 Built to support complex object structures, deeply nested arrays, and async validators.
