@@ -13,7 +13,7 @@ Built to support complex object structures, deeply nested arrays, and async vali
 Via node
 
 ```
-	var Validator = require('./angular-validator/bi-validator');
+	var validator = require('./angular-validator/bi-validator');
 ```
 
 Or the browser
@@ -26,13 +26,27 @@ A basic example of validating an object by declaring a schema, and calling the v
 
 ```
 	var schema = {
-		property: new Validator.Field({type: 'string'})
+		property: new validator.Field({type: 'string'})
 	};
 	var obj = {
 		property: 'some value'
 	};
-	Validator.validate(obj, schema, function(err) {
+	validator.validate(obj, schema, function(err) {
 		if (err) { return console.log('invalid', err) }
 		return console.log('valid!');
 	});
 ```
+
+### Develop
+**Setup**
+
+```npm install```
+
+```bower install```
+
+
+**Tests**
+
+Tests use [mocha](http://mochajs.org/).  To run, use:
+
+```mocha tests/``` - You may need to ```npm install mocha -g```
