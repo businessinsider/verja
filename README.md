@@ -1,4 +1,4 @@
-BI's Declarative Object Validator
+Verja - BI's Declarative Object Validator
 =================================
 
 Built to support complex object structures, deeply nested arrays, and async validators.
@@ -13,25 +13,25 @@ Built to support complex object structures, deeply nested arrays, and async vali
 Via node
 
 ```
-	var validator = require('./verja');
+	var verja = require('./verja');
 ```
 
 Or the browser
 
 ```
-	<script src="/angular-validator/verja.js" type="text/javascript"></script>
+	<script src="/verja.js" type="text/javascript"></script>
 ```
 
 A basic example of validating an object by declaring a schema, and calling the validate method
 
 ```
 	var schema = {
-		property: new validator.Field({type: 'string'})
+		property: new verja.Field({type: 'string'})
 	};
 	var obj = {
 		property: 'some value'
 	};
-	validator.validate(obj, schema, function(err) {
+	verja.validate(obj, schema, function(err) {
 		if (err) { return console.log('invalid', err) }
 		return console.log('valid!');
 	});
