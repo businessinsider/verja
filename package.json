@@ -2,15 +2,16 @@
 	"name": "verja",
 	"version": "0.0.1",
 	"description": "A schema based object validator",
+	"license": "MIT",
 	"scripts": {
 		"test": "cd tests && mocha" 
-	},
-	"dependencies": {
-		"mocha": "^1.21.5"
 	},
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/businessinsider/verja/"
+	},
+	"bugs": {
+		"url": "https://github.com/businessinsider/verja/issues"
 	},
 	"main": "verja.js",
 	"keywords": [
@@ -22,5 +23,7 @@
 		"object validator",
 		"object"
 	],
-	"license": "MIT"
+	"devDependencies": {
+		"mocha": "^1.21.5"
+	}
 }
