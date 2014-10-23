@@ -49,4 +49,4 @@ A basic example of validating an object by declaring a schema, and calling the v
 
 Tests use [mocha](http://mochajs.org/).  To run, use:
 
-```mocha tests/``` - You may need to ```npm install mocha -g```
+```npm test``` - You may need to ```npm install mocha -g```

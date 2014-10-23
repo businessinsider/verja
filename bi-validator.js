@@ -47,7 +47,7 @@
 
 	function addValidator(name, func) {
 		validators[name] = function(val, config, callback) {
-			if (func(val)) {
+			if (func(val, config)) {
 				callback(true);
 				return;
 			}
