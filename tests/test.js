@@ -84,7 +84,7 @@ describe('validator', function() {
 				errObj = e;
 			});
 
-			assert.equal(JSON.stringify(errObj), JSON.stringify({key: {'1': {type:true}}}));
+			assert.equal(JSON.stringify(errObj), JSON.stringify({key: {0: {}, 1: {type:true}}}));
 		});
 
 		//need to fix the lib so this works
