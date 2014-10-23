@@ -112,7 +112,7 @@
 	};
 
 	if (typeof window !== 'undefined') {
-		window.Validator = window.Validator || exports;
+		window.verja = window.verja || exports;
 	} else {
 		module.exports = exports;
 	}
