@@ -1,6 +1,3 @@
-// var schema = {username: {type: String, email: true, onlyChars: ['a','b','c']]}}
-// var schema = {username: {type: String, email: true, onlyChars: ['x','y','z']]}}
-
 (function(undefined) {
 
 	'use strict';
