@@ -72,8 +72,7 @@ describe('verja API', function() {
 			key2: new verja.Field({required: true, type: 'boolean'})
 		};
 
-		it('should validate an array', function() {
-			var errObj;
+		it('should validate an array', function(done) {
 			var objArr = {
 				key: ['string', {}]
 			};
@@ -81,15 +80,15 @@ describe('verja API', function() {
 				key: [new verja.Field({type: 'string'})]
 			};
 			verja.validate(objArr,arrSch, function(e) {
-				errObj = e;
+				assert.equal(JSON.stringify(e), JSON.stringify({key: {0: {}, 1: {type:true}}}));
+				done();
 			});
 
-			assert.equal(JSON.stringify(errObj), JSON.stringify({key: {0: {}, 1: {type:true}}}));
 		});
 
 		//need to fix the lib so this works
 		it('should validate a primative', function(done) {
-			verja.validate('some string', new verja.Field({type: 'string'}), function(e){
+			verja.validate('some string', new verja.Field({type: 'string'}), function(e) {
 				if (e) { throw e; }
 				done();
 			});

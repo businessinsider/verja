@@ -1,5 +1,9 @@
 (function(undefined) {
 
+	function log(x){
+		console.log(x);
+	}
+
 	'use strict';
 
 	var validators = {
@@ -73,11 +77,8 @@
 						totalValidated++;
 
 						if (totalValidated === totalValidators) {
-							if (!errorTotal.total) {
-								return callback(null);
-							}
-							
-							callback(errors);
+
+							callback();
 						}
 					}
 					validators[validatorName](object, schema[validatorName], validatorCallback);
@@ -106,12 +107,20 @@
 	function validate(object, schema, callback) {
 		var errors = {};
 		var errorTotal = {total: 0};
+		validateFuncs = [];
+		totalValidators = 0;
+		totalValidated = 0;
 
 		runValidators(object, schema, errors, errorTotal);
 		totalValidators = validateFuncs.length;
 
 		validateFuncs.forEach(function(func){
-			func(callback);
+			func(function() {
+				if (!errorTotal.total) {
+					return callback(null);
+				}
+				callback(errors);
+			});
 		});
 	}
 

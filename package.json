@@ -4,7 +4,7 @@
 	"description": "A schema based object validator",
 	"license": "MIT",
 	"scripts": {
-		"test": "mocha --reporter progress tests/" 
+		"test": "mocha tests/" 
 	},
 	"repository": {
 		"type": "git",

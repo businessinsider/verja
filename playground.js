@@ -1,42 +1,24 @@
 'use strict';
 
-var validator = require('./verja');
-
-validator.addValidator('email', function(val) {
-	if (!val) return true;
-	return false;
-});
+var verja = require('./verja');
 
 var obj = {
 	name: 'some too long name',
 	email: 'forrest.alamsi@gmail.com'
 };
 
-var scheme = {
-	name: new validator.Field({
-		type: String,
-		maxlength: 5
-	}),
-	email: new validator.Field({
-		type: String,
-		minlength: 4,
-		email: true
-	}),
-	date: new validator.Field({
-		required: true,
-		type: Date
-	})
-};
-
 var schema2 = {
 	car: {
 		type: {
-			make: new validator.Field({
-				type: String,
-				minlength: 3
+			make: new verja.Field({
+				type: 'string',
+				minlength: 90
 			})
 		}
-	}
+	},
+	key: new verja.Field({
+		type: 'object'
+	})
 };
 
 var my240 = {
@@ -44,14 +26,34 @@ var my240 = {
 		type: {
 			make: 'Volvo'
 		}
+	},
+	key: 'string'
+};
+
+var goodNest = {
+
+	key: {
+		str: 'value',
+		obj: {}
+	},
+	key2: true
+};
+
+var badNest = {
+	key: {
+		str: [],
+		obj: null
 	}
 };
 
+var nestSchema = {
+	key: {
+		str: new verja.Field({type: 'string'}),
+		obj: new verja.Field({type: 'object'})
+	},
+	key2: new verja.Field({required: true, type: 'boolean'})
+};
 
-validator.validate(obj, scheme, function(err) {
-	console.log(err);
-});
-
-validator.validate(my240, schema2, function(err) {
-	console.log(err);
+verja.validate('some string', new verja.Field({type: 'string'}), function(e) {
+	console.log(e);
 });
