@@ -50,10 +50,16 @@
 			callback(true);
 		},
 		email: function(val, config, callback) {
-
+			if (val) {
+				return callback(false);
+			}
+			callback(true);
 		},
 		url: function(val, config, callback) {
-
+			if (val) {
+				return callback(false);
+			}
+			callback(true);
 		}
 	};
 
