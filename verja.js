@@ -1,9 +1,4 @@
 (function(undefined) {
-
-	function log(x){
-		console.log(x);
-	}
-
 	'use strict';
 
 	var validators = {
@@ -12,72 +7,75 @@
 			var valtype = Object.prototype.toString.call(val);
 			valtype = valtype.substr(8, valtype.length - 9).toLowerCase();
 
-			if (valtype === config) {
-				callback(false);
-				return;
-			}
-
-			callback(true);
+			if (valtype === config) return callback(false);
+			callback(true, 'type');
 		},
 		required: function(val, config, callback) {
-			if (!val) {
-				callback(true);
-				return;
-			}
+			if (val === undefined) return callback(true, 'required');
 			callback(false);
 		},
 		maxlength: function(val, config, callback) {
-			var invalid;
-			if (val.length > config) {
-				invalid = true;
-			} else {
-				invalid = false;
-			}
-			callback(invalid);
+			if (!val.length || val.length >= config) return callback(true, 'maxlength');
+			callback(false);
 		},
 		minlength: function(val, config, callback) {
-			var invalid;
-			if (val.length < config) {
-				invalid = true;
-			} else {
-				invalid = false;
-			}
-			callback(invalid);
+			if (!val.length || val.length <= config) return callback(true, 'minlength');
+			callback(false);
 		}
 	};
 
 	function addValidator(name, func) {
 		validators[name] = function(val, config, callback) {
-			if (func(val, config)) {
-				callback(true);
-				return;
-			}
+			if (func(val, config)) return callback(true, name);
 			callback(false);
 		};
 	}
-	
-	var validateFuncs = [];
-	var totalValidators = 0;
-	var totalValidated = 0;
 
-	function runValidators(object,schema,errors,errorTotal) {
+	function iterate(object, schema, fieldCallback, precursor, error) {
+		if (!fieldCallback) fieldCallback = function() {};
+		if (!precursor) precursor = function() {};
+		if(!error) error = function() {
+			throw new Error('Internal Validation error for ', object,schema);
+		}
+		if (schema instanceof Field) {
+			fieldCallback(object, schema);
+		}
+		//if its an array recurse over all the values in the object
+		else if (schema instanceof Array && object instanceof Array) {
+			object.forEach(function(arrayValue, index) {
+				precursor(object[index], schema[0]);
+				iterate(object[index], schema[0], fieldCallback, precursor, error);
+			});
+		}
+		//otherwise go through the keys on the schema and recurse
+		else if (schema instanceof Object && object instanceof Object) {
+			Object.keys(schema).forEach(function(property) {
+				precursor(object[property], schema[property]);
+				iterate(object[property], schema[property], fieldCallback, precursor, error);
+			});
+		} else {
+			//this should never happen, if it does, we aren't handling an object/schema construction error properly
+			error(object, schema, fieldCallback, precursor);
+		}
+	}
+	
+	function runValidators(object, schema, errors, init) {
 		//if the schema is a field validate the property
 		if (schema instanceof Field) {
 			Object.keys(schema).forEach(function(validatorName){
-				validateFuncs.push(function(callback) {
-					//call the validator
-					function validatorCallback(invalid) {
+				init.validateFuncs.push(function(callback) {
+					function validatorCallback(invalid, validatorName) {
 						if (invalid) {
 							errors[validatorName] = true;
-							errorTotal.total++;
+							init.errorTotal++;
 						}
-						totalValidated++;
+						init.totalValidated++;
 
-						if (totalValidated === totalValidators) {
-
+						if (init.totalValidated === init.totalValidators) {
 							callback();
 						}
 					}
+					//call the validator
 					validators[validatorName](object, schema[validatorName], validatorCallback);
 				});
 			});
@@ -86,14 +84,14 @@
 		else if (schema instanceof Array && object instanceof Array) {
 			object.forEach(function(arrayValue, index){
 				if (!errors[index]) { errors[index] = {}; }
-				runValidators(object[index], schema[0], errors[index], errorTotal);
+				runValidators(object[index], schema[0], errors[index], init);
 			});
 		}
 		//otherwise go through the keys on the schema and recurse
 		else if (schema instanceof Object && object instanceof Object) {
 			Object.keys(schema).forEach(function(property){
 				if (!errors[property]) { errors[property] = {}; }
-				runValidators(object[property], schema[property], errors[property], errorTotal);
+				runValidators(object[property], schema[property], errors[property], init);
 			});
 		} else {
 			//this should never happen, if it does, we aren't handling an object/schema construction error properly
@@ -103,17 +101,19 @@
 
 	function validate(object, schema, callback) {
 		var errors = {};
-		var errorTotal = {total: 0};
-		validateFuncs = [];
-		totalValidators = 0;
-		totalValidated = 0;
+		var init = {
+			totalValidators: 0,
+			totalValidated: 0,
+			errorTotal: 0,
+			validateFuncs: []
+		};
 
-		runValidators(object, schema, errors, errorTotal);
-		totalValidators = validateFuncs.length;
+		runValidators(object, schema, errors, init);
+		init.totalValidators = init.validateFuncs.length;
 
-		validateFuncs.forEach(function(func){
+		init.validateFuncs.forEach(function(func){
 			func(function() {
-				if (!errorTotal.total) {
+				if (!init.errorTotal) {
 					return callback(null);
 				}
 				callback(errors);
@@ -131,7 +131,8 @@
 		addValidator: addValidator,
 		validate: validate,
 		validators: validators,
-		Field: Field
+		Field: Field,
+		iterate: iterate
 	};
 
 	if (typeof window !== 'undefined') {

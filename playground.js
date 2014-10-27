@@ -4,7 +4,7 @@ var verja = require('./verja');
 
 var obj = {
 	name: 'some too long name',
-	email: 'forrest.alamsi@gmail.com'
+	email: 'forrest.almasi@gmail.com'
 };
 
 var schema2 = {
@@ -48,10 +48,11 @@ var badNest = {
 
 var nestSchema = {
 	key: {
-		str: new verja.Field({type: 'string'}),
-		obj: new verja.Field({type: 'object'})
+		str: new verja.Field(),
+		obj: new verja.Field()
 	},
-	key2: new verja.Field({required: true, type: 'boolean', async: false})
+	key2: new verja.Field(),
+	key3: []
 };
 
 verja.addValidator('async', function(val, options, callback) {
@@ -59,4 +60,8 @@ verja.addValidator('async', function(val, options, callback) {
 		if (!val) return callback(true);
 		callback(false);
 	}, 1000);
+});
+
+verja.iterate(goodNest, nestSchema, function(x,y){
+	console.log(x,y)
 });
