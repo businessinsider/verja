@@ -244,4 +244,92 @@ describe('validation rules', function() {
 
 	});
 
+	describe('equals', function(done) {
+
+		it ('should pass when a string is equal', function(done) {
+			var schema = {
+				key: new verja.Field({equals: 'this string'})
+			};
+			var obj = {
+				key: 'this string'
+			};
+			verja.validate(obj, schema, function(err) {
+				if (!err) return done();
+				throw err;
+			});
+		});
+
+		it ('should pass when a number is equal', function(done) {
+			var schema = {
+				key: new verja.Field({equals: 5})
+			};
+			var obj = {
+				key: 5
+			};
+			verja.validate(obj, schema, function(err) {
+				if (!err) return done();
+				throw err;
+			});
+		});
+
+		it ('should pass for a boolean', function(done) {
+			var schema = {
+				key: new verja.Field({equals: false})
+			};
+			var obj = {
+				key: false
+			};
+			verja.validate(obj, schema, function(err) {
+				if (!err) return done();
+				throw err;
+			});
+		});
+
+		it ('should pass for a pointer to the same object', function(done) {
+			var point = new Object();
+			var schema = {
+				key: new verja.Field({equals: point})
+			};
+			var obj = {
+				key: point
+			};
+			verja.validate(obj, schema, function(err) {
+				if (!err) return done();
+				throw err;
+			});
+		});
+
+		it ('should fail for a string number and a number', function(done) {
+			var schema = {
+				key: new verja.Field({equals: 5})
+			};
+			var obj = {
+				key: '5'
+			};
+			verja.validate(obj, schema, function(err) {
+				if (err) return done();
+				throw err;
+			});
+
+		});
+
+		it ('should fail in other cases', function(done) {
+			var schema = {
+				key: new verja.Field({equals: []}),
+				key2: new verja.Field({equals: {}}),
+				key3: new verja.Field({equals: NaN})
+			};
+			var obj = {
+				key: [],
+				key2: {},
+				key3: NaN
+			};
+			verja.validate(obj, schema, function(err) {
+				if (err) return done();
+				throw err;
+			});
+		});
+
+	});
+
 });

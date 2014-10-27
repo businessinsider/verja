@@ -30,6 +30,18 @@
 			if (!val.length || val.length <= config) return callback(true);
 			callback(false);
 		},
+		int: function(val, config, callback) {
+			if (Math.round(val) === val) {
+				return callback(false);
+			}
+			callback(true);
+		},
+		equals: function(val, config, callback) {
+			if (val === config) {
+				return callback(false);
+			}
+			callback(true);
+		},
 		//to do: test below, sort these
 		regex: function(val, config, callback) {
 			if (val.search(config)) {
@@ -42,18 +54,6 @@
 		},
 		url: function(val, config, callback) {
 
-		},
-		int: function(val, config, callback) {
-			if (Math.round(val) === val) {
-				return callback(false);
-			}
-			callback(true);
-		},
-		equals: function(val, config, callback) {
-			if (val !== config) {
-				return callback(true);
-			}
-			callback(false);
 		}
 	};
 
