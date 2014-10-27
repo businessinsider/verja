@@ -31,48 +31,7 @@
 		};
 	}
 
-	function iterate(object, schema, fieldCallback, precursor, error) {
-		if (!fieldCallback) { fieldCallback = function() {}; }
-		if (!precursor) { precursor = function() {}; }
-		if (!error) {
-			error = function() {
-				throw new Error('Internal Validation error for ', object, schema);
-			};
-		}
-		if (schema instanceof Field) {
-			fieldCallback(object, schema);
-		}
-		//if its an array recurse over all the values in the object
-		else if (schema instanceof Array && object instanceof Array) {
-			object.forEach(function(arrayValue, index) {
-				precursor(object[index], schema[0]);
-				iterate(object[index], schema[0], fieldCallback, precursor, error);
-			});
-		}
-		//otherwise go through the keys on the schema and recurse
-		else if (schema instanceof Object && object instanceof Object) {
-			Object.keys(schema).forEach(function(property) {
-				precursor(object[property], schema[property]);
-				iterate(object[property], schema[property], fieldCallback, precursor, error);
-			});
-		} else {
-			//this should never happen, if it does, we aren't handling an object/schema construction error properly
-			error(object, schema, fieldCallback, precursor);
-		}
-	}
-
-	function updateErrors(errors, location) {
-
-	}
-
 	function runValidators(object, schema, errors, init) {
-
-		// iterate(object, schema, function(object, schema) {
-		// 	// updateErrors(errors, location)
-		// }, function(object, schema) {
-
-		// });
-
 		// if the schema is a field validate the property
 		if (schema instanceof Field) {
 			Object.keys(schema).forEach(function(validatorName){
@@ -144,8 +103,7 @@
 		addValidator: addValidator,
 		validate: validate,
 		validators: validators,
-		Field: Field,
-		iterate: iterate
+		Field: Field
 	};
 
 	if (typeof window !== 'undefined') {

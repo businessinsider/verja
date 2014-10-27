@@ -4,7 +4,7 @@ var assert = require('assert');
 var verja = require('../verja.js');
 
 describe('verja API', function() {
-	
+
 	describe('addValidator', function() {
 
 		verja.addValidator('haskey', function(val) {
@@ -43,94 +43,6 @@ describe('verja API', function() {
 
 		it('should be able to check if a field is an instance of Field', function() {
 			assert.equal(field instanceof verja.Field, true);
-		});
-
-	});
-
-	describe('iterate', function() {
-
-
-		it ('should iterate through the object', function() {
-			var obj = {
-				key: {},
-				key2: {},
-				key3: {}
-			};
-			var schema = {
-				key: {
-					str: new verja.Field(),
-					obj: new verja.Field()
-				},
-				key2: new verja.Field(),
-				key3: []
-			};
-			var returned = 0;
-			verja.iterate(obj, schema, function(x){
-				returned++;
-			});
-			assert.equal(returned, 3);
-		});
-
-		it('should handle members of an array', function() {
-			var obj = {
-				key: ['some string', {}, {}]
-			};
-
-			var schema = {
-				key: [new verja.Field()],
-			};
-			var returned = 0;
-			verja.iterate(obj, schema, function(x){
-				returned++;
-			});
-			assert.equal(returned, 3);
-		});
-
-		it('fieldCallback should be optional', function() {
-			var obj = {key: 'something'};
-			var schema = {key: new verja.Field()};
-
-			verja.iterate(obj, schema, null, function(){
-
-			});
-
-		});
-
-		it('precursor should be optional', function() {
-			var obj = {key: 'something'};
-			var schema = {key: new verja.Field()};
-
-			verja.iterate(obj, schema, function() {
-
-			}, null);
-		});
-
-		it ('the precursor shold be called the correct number of times', function() {
-			var obj = {
-				key: ['some string', {}, {}],
-				key2: 'string'
-			};
-
-			var schema = {
-				key: [new verja.Field()],
-				key2: new verja.Field(),
-				key3: new verja.Field()
-			};
-			var returned = 0;
-			verja.iterate(obj, schema, null, function() {
-				returned++;
-			});
-
-			assert.equal(returned, 6);
-		});
-
-		it ('should throw an error if a schema is not passed', function(done) {
-			var obj = {key: 'something'};
-			var schema = {key: new verja.Field()};
-
-			verja.iterate(obj, null, null, null, function(err){
-				done();
-			});
 		});
 
 	});
