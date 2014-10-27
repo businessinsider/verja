@@ -51,9 +51,12 @@ var nestSchema = {
 		str: new verja.Field({type: 'string'}),
 		obj: new verja.Field({type: 'object'})
 	},
-	key2: new verja.Field({required: true, type: 'boolean'})
+	key2: new verja.Field({required: true, type: 'boolean', async: false})
 };
 
-verja.validate('some string', new verja.Field({type: 'string'}), function(e) {
-	console.log(e);
+verja.addValidator('async', function(val, options, callback) {
+	setTimeout(function() {
+		if (!val) return callback(true);
+		callback(false);
+	}, 1000);
 });

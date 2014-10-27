@@ -7,9 +7,6 @@
 	'use strict';
 
 	var validators = {
-		async: function(val, config, callback) {
-			//do something
-		},
 		//takes lower case string of type for config
 		type: function(val, config, callback) {
 			var valtype = Object.prototype.toString.call(val);
