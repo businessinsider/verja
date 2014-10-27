@@ -105,6 +105,25 @@ describe('verja API', function() {
 			}, null);
 		});
 
+		it ('the precursor shold be called the correct number of times', function() {
+			var obj = {
+				key: ['some string', {}, {}],
+				key2: 'string'
+			};
+
+			var schema = {
+				key: [new verja.Field()],
+				key2: new verja.Field(),
+				key3: new verja.Field()
+			};
+			var returned = 0;
+			verja.iterate(obj, schema, null, function() {
+				returned++;
+			});
+
+			assert.equal(returned, 6);
+		});
+
 		it ('should throw an error if a schema is not passed', function(done) {
 			var obj = {key: 'something'};
 			var schema = {key: new verja.Field()};

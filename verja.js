@@ -1,4 +1,4 @@
-(function(undefined) {
+;(function(undefined) {
 	'use strict';
 
 	var validators = {
@@ -32,10 +32,12 @@
 	}
 
 	function iterate(object, schema, fieldCallback, precursor, error) {
-		if (!fieldCallback) fieldCallback = function() {};
-		if (!precursor) precursor = function() {};
-		if(!error) error = function() {
-			throw new Error('Internal Validation error for ', object,schema);
+		if (!fieldCallback) { fieldCallback = function() {}; }
+		if (!precursor) { precursor = function() {}; }
+		if (!error) {
+			error = function() {
+				throw new Error('Internal Validation error for ', object, schema);
+			};
 		}
 		if (schema instanceof Field) {
 			fieldCallback(object, schema);
@@ -58,9 +60,20 @@
 			error(object, schema, fieldCallback, precursor);
 		}
 	}
-	
+
+	function updateErrors(errors, location) {
+
+	}
+
 	function runValidators(object, schema, errors, init) {
-		//if the schema is a field validate the property
+
+		// iterate(object, schema, function(object, schema) {
+		// 	// updateErrors(errors, location)
+		// }, function(object, schema) {
+
+		// });
+
+		// if the schema is a field validate the property
 		if (schema instanceof Field) {
 			Object.keys(schema).forEach(function(validatorName){
 				init.validateFuncs.push(function(callback) {
@@ -94,8 +107,8 @@
 				runValidators(object[property], schema[property], errors[property], init);
 			});
 		} else {
-			//this should never happen, if it does, we aren't handling an object/schema construction error properly
-			throw new Error('Internal Validation error for ', object,schema,errors,errorTotal);
+			// this should never happen, if it does, we aren't handling an object/schema construction error properly
+			throw new Error('Internal Validation error for ', object, schema, errors);
 		}
 	}
 
