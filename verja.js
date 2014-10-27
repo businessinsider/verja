@@ -11,15 +11,48 @@
 			callback(true, 'type');
 		},
 		required: function(val, config, callback) {
-			if (val === undefined) return callback(true, 'required');
+			if (val === undefined) return callback(true);
 			callback(false);
 		},
 		maxlength: function(val, config, callback) {
-			if (!val.length || val.length >= config) return callback(true, 'maxlength');
+			if (!val.length || val.length >= config) return callback(true);
 			callback(false);
 		},
 		minlength: function(val, config, callback) {
-			if (!val.length || val.length <= config) return callback(true, 'minlength');
+			if (!val.length || val.length <= config) return callback(true);
+			callback(false);
+		},
+		//to do: test below, sort these
+		max: function(val, config, callback) {
+			if (!val || val >= config) return callback(true);
+			callback(false);	
+		},
+		min: function(val, config, callback) {
+			if (!val || val <= config) return callback(true);
+			callback(false);
+		},
+		regex: function(val, config, callback) {
+			if (val.search(config)) {
+				return callback(false)
+			}
+			callback(true);
+		},
+		email: function(val, config, callback) {
+
+		},
+		url: function(val, config, callback) {
+
+		},
+		int: function(val, config, callback) {
+			if (Math.round(val) === val) {
+				return callback(false);
+			}
+			callback(true);
+		},
+		equals: function(val, config, callback) {
+			if (val !== config) {
+				return callback(true);
+			}
 			callback(false);
 		}
 	};
@@ -108,7 +141,7 @@
 
 	if (typeof window !== 'undefined') {
 		window.verja = window.verja || exports;
-	} else {
+	} else if (module) {
 		module.exports = exports;
 	}
 

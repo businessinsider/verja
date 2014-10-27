@@ -130,4 +130,37 @@ describe('validation rules', function() {
 
 	});
 
+	describe('max', function() {
+		var schema = {
+			key: new verja.Field({max: 5})
+		};
+
+		it ('should throw an error if it\'s over the max', function(done) {
+			var obj = {key: 6};
+			verja.validate(obj, schema, function(err) {
+				if (err) return done();
+				throw err;
+			});
+
+		});
+
+
+		it ('should not throw an error if it\'s under the max', function(done) {
+			var obj = {key: 4};
+			verja.validate(obj, schema, function(err) {
+				if (!err) return done();
+				throw err;
+			});
+		});
+
+		it ('should fail if not number', function(done) {
+			var obj = {key: {}}
+			verja.validate(obj, schema, function(err) {
+				if (err) return done();
+				throw err;
+			});
+		});
+
+	});
+
 });
