@@ -59,6 +59,74 @@ describe('validation rules', function() {
 		});
 
 	});
+
+	describe('max', function() {
+		var schema = {
+			key: new verja.Field({max: 5})
+		};
+
+		it ('should throw an error if it\'s over the max', function(done) {
+			var obj = {key: 6};
+			verja.validate(obj, schema, function(err) {
+				if (err) return done();
+				throw err;
+			});
+
+		});
+
+
+		it ('should not throw an error if it\'s under the max', function(done) {
+			var obj = {key: 4};
+			verja.validate(obj, schema, function(err) {
+				if (!err) return done();
+				throw err;
+			});
+		});
+
+		it ('should fail if not number', function(done) {
+			var obj = {key: {}}
+			verja.validate(obj, schema, function(err) {
+				if (err) return done();
+				throw err;
+			});
+		});
+
+	});
+
+	describe('min', function() {
+		var schema = {
+			key: new verja.Field({min: 5})
+		};
+
+		it ('should throw an error if it\'s under the min', function(done) {
+			var obj = {key: 4};
+			verja.validate(obj, schema, function(err) {
+				if (err) return done();
+				throw err;
+			});
+
+		});
+
+
+		it ('should not throw an error if it\'s over the min', function(done) {
+			var obj = {key: 6};
+			verja.validate(obj, schema, function(err) {
+				if (!err) return done();
+				throw err;
+			});
+
+		});
+
+		it ('should fail if not an array or string', function(done) {
+			var obj = {key: true};
+			verja.validate(obj, schema, function(err) {
+				if (err) return done();
+				throw err;
+			});
+
+		});
+
+	});
 	
 	describe('maxlength', function() {
 
@@ -106,7 +174,6 @@ describe('validation rules', function() {
 				if (err) return done();
 				throw err;
 			});
-
 		});
 
 
@@ -116,7 +183,6 @@ describe('validation rules', function() {
 				if (!err) return done();
 				throw err;
 			});
-
 		});
 
 		it ('should fail if not an array or string', function(done) {
@@ -125,36 +191,51 @@ describe('validation rules', function() {
 				if (err) return done();
 				throw err;
 			});
-
 		});
 
 	});
 
-	describe('max', function() {
+	describe('int', function() {
 		var schema = {
-			key: new verja.Field({max: 5})
-		};
+			key: new verja.Field({int: true})
+		}
 
-		it ('should throw an error if it\'s over the max', function(done) {
-			var obj = {key: 6};
+		it ('should confirm that a number is an integer', function(done) {
+			var obj = {
+				key: 5
+			};
+
+			verja.validate(obj, schema, function(err) {
+				if (err) throw err;
+				done();
+			});
+		});
+
+		it ('should fail for a float', function(done) {
+			var obj = {
+				key: 5.555
+			};
+
 			verja.validate(obj, schema, function(err) {
 				if (err) return done();
 				throw err;
 			});
-
 		});
 
-
-		it ('should not throw an error if it\'s under the max', function(done) {
-			var obj = {key: 4};
+		it ('should fail for a string number', function(done) {
+			var obj = {
+				key: '5'
+			};
 			verja.validate(obj, schema, function(err) {
-				if (!err) return done();
+				if (err) return done();
 				throw err;
 			});
 		});
 
-		it ('should fail if not number', function(done) {
-			var obj = {key: {}}
+		it ('should fail for a non-number', function(done) {
+			var obj = {
+				key: []
+			};
 			verja.validate(obj, schema, function(err) {
 				if (err) return done();
 				throw err;

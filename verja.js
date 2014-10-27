@@ -14,6 +14,14 @@
 			if (val === undefined) return callback(true);
 			callback(false);
 		},
+		max: function(val, config, callback) {
+			if (!val || val >= config) return callback(true);
+			callback(false);	
+		},
+		min: function(val, config, callback) {
+			if (!val || val <= config) return callback(true);
+			callback(false);
+		},
 		maxlength: function(val, config, callback) {
 			if (!val.length || val.length >= config) return callback(true);
 			callback(false);
@@ -23,14 +31,6 @@
 			callback(false);
 		},
 		//to do: test below, sort these
-		max: function(val, config, callback) {
-			if (!val || val >= config) return callback(true);
-			callback(false);	
-		},
-		min: function(val, config, callback) {
-			if (!val || val <= config) return callback(true);
-			callback(false);
-		},
 		regex: function(val, config, callback) {
 			if (val.search(config)) {
 				return callback(false)
