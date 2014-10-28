@@ -43,8 +43,8 @@ describe('validation rules', function() {
 			};
 
 			verja.validate(obj, schema, function(err) {
-				if (err) throw err;
-				done();
+				if (!err) return done();
+				throw err;
 			});
 		});
 
