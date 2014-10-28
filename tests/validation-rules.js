@@ -445,7 +445,7 @@ describe('validation rules', function() {
 			var obj = {
 				key: 'http://gardenparty.club',
 				key2: 'http://www.businessinsider.com',
-				key3: 'https://github.com/malls'
+				key3: 'https://github.com/malls/'
 			};
 			verja.validate(obj, schema, function(err) {
 				if (!err) return done();
