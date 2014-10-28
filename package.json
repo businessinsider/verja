@@ -1,29 +1,31 @@
 {
-	"name": "verja",
-	"version": "0.0.1",
-	"description": "A schema based object validator",
-	"license": "MIT",
-	"scripts": {
-		"test": "mocha tests/" 
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/businessinsider/verja/"
-	},
-	"bugs": {
-		"url": "https://github.com/businessinsider/verja/issues"
-	},
-	"main": "verja.js",
-	"keywords": [
-		"validator",
-		"validation",
-		"schema",
-		"type",
-		"object validation",
-		"object validator",
-		"object"
-	],
-	"devDependencies": {
-		"mocha": "^1.21.5"
-	}
+  "name": "verja",
+  "version": "0.0.1",
+  "description": "A schema based object validator",
+  "license": "MIT",
+  "scripts": {
+    "test": "mocha tests/",
+    "minify": "uglifyjs verja.js -o \"verja.min.js\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/businessinsider/verja/"
+  },
+  "bugs": {
+    "url": "https://github.com/businessinsider/verja/issues"
+  },
+  "main": "verja.js",
+  "keywords": [
+    "validator",
+    "validation",
+    "schema",
+    "type",
+    "object validation",
+    "object validator",
+    "object"
+  ],
+  "devDependencies": {
+    "mocha": "^1.21.5",
+    "uglify-js": "^2.4.15"
+  }
 }

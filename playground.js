@@ -61,7 +61,3 @@ verja.addValidator('async', function(val, options, callback) {
 		callback(false);
 	}, 1000);
 });
-
-verja.iterate(goodNest, nestSchema, function(x,y){
-	console.log(x,y)
-});

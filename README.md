@@ -98,4 +98,10 @@ var schema = {
 
 Tests use [mocha](http://mochajs.org/).  To run, use:
 
-```npm test``` - You may need to ```npm install mocha -g```
+```npm test```
+
+**Minification**
+
+Minify using [uglify-js](http://lisperator.net/uglifyjs/). To minify, use:
+
+```npm run minify```
