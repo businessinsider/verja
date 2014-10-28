@@ -16,9 +16,9 @@ describe ('verja API', function() {
 		});
 
 		it ('makes this array thing work how i want', function() {
-			verja.addValidator('isntArray', function(val, config) {
-				if (Array.isArray(val)) return false;
-				return true;
+			verja.addValidator('isntArray', function(val, config,callback) {
+				if (Array.isArray(val)) return callback(true);
+				return callback(false);
 			});
 			var schema = {
 				key: new verja.Field({isntArray: true}),
@@ -38,7 +38,7 @@ describe ('verja API', function() {
 		it ('should work with an async validator', function(done) {
 			verja.addValidator('async', function(val, config, callback) {
 				setTimeout(function() {
-					callback(true);
+					callback(false);
 				}, 10);
 			});
 
@@ -108,7 +108,6 @@ describe ('verja API', function() {
 
 		});
 
-		//need to fix the lib so this works
 		it ('should validate a primative', function(done) {
 			verja.validate('some string', new verja.Field({type: 'string'}), function(e) {
 				if (e) { throw e; }
@@ -116,7 +115,6 @@ describe ('verja API', function() {
 			});
 		});
 
-		//need to fix the lib so this works
 		it ('should validate simple nested objects and return null for errors in the callback', function(done) {
 			verja.validate(goodNest, nestSchema, function(e) {
 				if (e !== null) { throw e; }

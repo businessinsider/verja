@@ -74,16 +74,19 @@ var schema = {
 };
 ```
 
-You can add custom validators like this. Return true if you want an error, false if no error:
+You can add custom validators like this. Pass true to the callback if the field is valid, false if it is not
+All validators are assumed to be async so returning will not do anything, you must use the callback
+
+Config will be the value of the validator property on the Field object passed into the schema
 
 ```
-verja.addValidator('isntArray', function(val, config) {
-	if (Array.isArray(val)) return false;
-	return true;
+verja.addValidator('isArray', function(val, config, callback) {
+	if (Array.isArray(val)) { return callback(true); }
+	callback(false);
 });
 
 var schema = {
-	key: new verja.Field({isntArray: true})
+	key: new verja.Field({isArray: true})
 };
 ```
 

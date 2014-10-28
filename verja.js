@@ -9,73 +9,73 @@
 			valtype = valtype.substr(8, valtype.length - 9).toLowerCase();
 
 			if (valtype === config) {
-				return callback(false);
+				return callback(true);
 			}
-			callback(true, 'type');
+			callback(false, 'type');
 		},
 		required: function(val, config, callback) {
 			if (val === undefined) {
-				return callback(true);
+				return callback(false);
 			}
-			callback(false);
+			callback(true);
 		},
 		max: function(val, config, callback) {
 			if (!val || val >= config) {
-				return callback(true);
+				return callback(false);
 			}
-			callback(false);
+			callback(true);
 		},
 		min: function(val, config, callback) {
 			if (!val || val <= config) {
-				return callback(true);
+				return callback(false);
 			}
-			callback(false);
+			callback(true);
 		},
 		maxlength: function(val, config, callback) {
 			if (!val.length || val.length >= config) {
-				return callback(true);
+				return callback(false);
 			}
-			callback(false);
+			callback(true);
 		},
 		minlength: function(val, config, callback) {
 			if (!val.length || val.length <= config) {
+				return callback(false);
+			}
+			callback(true);
+		},
+		int: function(val, config, callback) {
+			if (Math.round(val) === val) {
 				return callback(true);
 			}
 			callback(false);
 		},
-		int: function(val, config, callback) {
-			if (Math.round(val) === val) {
-				return callback(false);
-			}
-			callback(true);
-		},
 		equals: function(val, config, callback) {
 			if (val === config) {
-				return callback(false);
+				return callback(true);
 			}
-			callback(true);
+			callback(false);
 		},
 		regex: function(val, config, callback) {
 			if (val.search(config) > -1) {
-				return callback(false);
+				return callback(true);
 			}
-			callback(true);
+			callback(false);
 		},
 		email: function(val, config, callback) {
 			var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 			if (regex.test(val)) {
-				return callback(false);
+				return callback(true);
 			}
-			callback(true);
+			callback(false);
 		},
 		url: function(val, config, callback) {
 			var regex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)/;
 
 			if (regex.test(val)) {
-				return callback(false);
+				return callback(true);
 			}
-			callback(true);
+			callback(false);
 		}
 	};
 
@@ -88,8 +88,8 @@
 		if (schema instanceof Field) {
 			Object.keys(schema).forEach(function(validatorName) {
 				init.validateFuncs.push(function(callback) {
-					function validatorCallback(invalid) {
-						if (invalid) {
+					function validatorCallback(valid) {
+						if (!valid) {
 							errors[validatorName] = true;
 							init.errorTotal++;
 						}
