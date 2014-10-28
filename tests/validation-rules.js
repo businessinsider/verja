@@ -415,7 +415,6 @@ describe('validation rules', function() {
 				key4: 'falmasi@c.'
 			};
 			verja.validate(obj, schema, function(err) {
-				console.log(JSON.stringify(err));
 				if (JSON.stringify(err) === '{"key":{"email":true},"key2":{"email":true},"key3":{"email":true},"key4":{"email":true}}') return done();
 				throw err;
 			});
