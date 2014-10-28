@@ -68,8 +68,7 @@
 
 	function addValidator(name, func) {
 		validators[name] = function(val, config, callback) {
-			if (func(val, config)) { return callback(true); }
-			callback(false);
+			func(val,config,callback);
 		};
 	}
 
@@ -144,7 +143,8 @@
 	var exports = {
 		addValidator: addValidator,
 		validate: validate,
-		Field: Field
+		Field: Field,
+		validators: validators
 	};
 
 	if (typeof window !== 'undefined') {

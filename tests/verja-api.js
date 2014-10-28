@@ -8,22 +8,11 @@ describe ('verja API', function() {
 	describe ('addValidator', function() {
 
 		it ('addValidator adds a validator', function() {
-			verja.addValidator('haskey', function(val) {
-				if (!val) return true;
-				return false;
+			verja.addValidator('haskey', function(val,config,callback) {
+				return callback(false)
 			});
 
-			var schema = {
-				key: new verja.Field({haskey: true})
-			};
-			var obj = {};
-			var errObj;
-
-			verja.validate(obj, schema, function(err) {
-				errObj = err;
-			});
-
-			assert.equal(true, errObj.key.haskey);
+			assert.equal(true, !!verja.validators.haskey);
 		});
 
 		it ('makes this array thing work how i want', function() {
@@ -44,6 +33,19 @@ describe ('verja API', function() {
 				assert.equal(JSON.stringify(err), '{\"key\":{\"isntArray\":true},\"key2\":{}}');
 			});
 
+		});
+
+		it ('should work with an async validator', function(done) {
+			verja.addValidator('async', function(val, config, callback) {
+				setTimeout(function() {
+					callback(true);
+				}, 10);
+			});
+
+			verja.validate({a: {async: 'adfafd'}}, {a: new verja.Field({async: true})}, function(e){
+				if (e) { return done(); }
+				throw 'Async validators dont work';
+			});
 		});
 
 	});
