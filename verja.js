@@ -42,21 +42,24 @@
 			}
 			callback(true);
 		},
-		//to do: test below, sort these
 		regex: function(val, config, callback) {
-			if (val.search(config)) {
-				return callback(false)
+			if (val.search(config) > -1) {
+				return callback(false);
 			}
 			callback(true);
 		},
 		email: function(val, config, callback) {
-			if (val) {
+			var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+			if (regex.test(val)) {
 				return callback(false);
 			}
 			callback(true);
 		},
 		url: function(val, config, callback) {
-			if (val) {
+			var regex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
+
+			if (regex.test(val)) {
 				return callback(false);
 			}
 			callback(true);

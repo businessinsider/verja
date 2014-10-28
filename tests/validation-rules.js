@@ -84,7 +84,9 @@ describe('validation rules', function() {
 		});
 
 		it ('should fail if not number', function(done) {
-			var obj = {key: {}}
+			var obj = {
+				key: {}
+			};
 			verja.validate(obj, schema, function(err) {
 				if (err) return done();
 				throw err;
@@ -153,7 +155,9 @@ describe('validation rules', function() {
 		});
 
 		it ('should fail if not an array or string', function(done) {
-			var obj = {key: {}}
+			var obj = {
+				key: {}
+			};
 			verja.validate(obj, schema, function(err) {
 				if (err) return done();
 				throw err;
@@ -198,7 +202,7 @@ describe('validation rules', function() {
 	describe('int', function() {
 		var schema = {
 			key: new verja.Field({int: true})
-		}
+		};
 
 		it ('should confirm that a number is an integer', function(done) {
 			var obj = {
@@ -244,7 +248,7 @@ describe('validation rules', function() {
 
 	});
 
-	describe('equals', function(done) {
+	describe('equals', function() {
 
 		it ('should pass when a string is equal', function(done) {
 			var schema = {
@@ -323,6 +327,144 @@ describe('validation rules', function() {
 				key: [],
 				key2: {},
 				key3: NaN
+			};
+			verja.validate(obj, schema, function(err) {
+				if (err) return done();
+				throw err;
+			});
+		});
+
+	});
+
+	describe ('regex', function() {
+		it ('should find an index in a string based on a string input', function(done) {
+			var schema = {
+				key: new verja.Field({regex: 'val'})
+			};
+
+			var obj = {
+				key: 'value'
+			};
+
+			verja.validate(obj, schema, function(err) {
+				if (!err) return done();
+				throw err;
+			});
+
+		});
+
+		it ('should not pass if the regex config is not present', function(done) {
+			var schema = {
+				key: new verja.Field({regex: 'value'})
+			};
+
+			var obj = {
+				key: 'val'
+			};
+
+			verja.validate(obj, schema, function(err) {
+				if (err) return done();
+				throw err;
+			});
+
+		});
+
+		it ('should accept a regular expression as an argument', function(done) {
+			var schema = {
+				key: new verja.Field({regex: /val/i})
+			};
+
+			var obj = {
+				key: 'Val'
+			};
+
+			verja.validate(obj, schema, function(err) {
+				if (!err) return done();
+				throw err;
+			});
+		});
+	});
+
+	describe ('email', function() {
+		it ('should tell if a given string is an email', function(done) {
+			var schema = {
+				key: new verja.Field({email: true}),
+				key2: new verja.Field({email: true})
+			};
+			var obj = {
+				key: 'falmasi@businessinsider.com',
+				key2: 'forrest.almasi@something.co.uk'
+			};
+			verja.validate(obj, schema, function(err) {
+				if (!err) return done();
+				throw err;
+			});
+		});
+
+		it ('should tell if a given string is not an email', function(done) {
+			var schema = {
+				key: new verja.Field({email: true})
+			};
+			var obj = {
+				key: 'falmasi@b@businessinsider.com'
+			};
+			verja.validate(obj, schema, function(err) {
+				if (err) return done();
+				throw err;
+			});
+		});
+
+		it ('should report an error if an input given is not a string', function(done) {
+			var schema = {
+				key: new verja.Field({email: true})
+			};
+			var obj = {
+				key: []
+			};
+			verja.validate(obj, schema, function(err) {
+				if (err) return done();
+				throw err;
+			});
+		});
+
+	});
+
+	describe ('url', function() {
+		it ('should tell if a given string is a url', function(done) {
+			var schema = {
+				key: new verja.Field({url: true}),
+				key2: new verja.Field({url: true}),
+				key3: new verja.Field({url: true})
+			};
+			var obj = {
+				key: 'http://gardenparty.club',
+				key2: 'http://www.businessinsider.com',
+				key3: 'https://github.com/malls'
+			};
+			verja.validate(obj, schema, function(err) {
+				if (!err) return done();
+				throw err;
+			});
+		});
+		it ('should tell if a given string is not a url', function(done) {
+			var schema = {
+				key: new verja.Field({url: true})
+			};
+			var obj = {
+				key: 'http://gardenparty'
+			};
+			verja.validate(obj, schema, function(err) {
+				if (err) return done();
+				throw err;
+			});
+		});
+
+		it ('should report an error if an input given is not a string', function(done) {
+			var schema = {
+				key: new verja.Field({url: true})
+			};
+			var obj = {
+				key: []
 			};
 			verja.validate(obj, schema, function(err) {
 				if (err) return done();
