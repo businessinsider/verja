@@ -1,6 +1,6 @@
 'use strict';
 
-var verja = require('../verja.js');
+var verja = require('../verja');
 
 describe('validation rules', function() {
 	
