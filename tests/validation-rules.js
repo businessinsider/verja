@@ -410,7 +410,7 @@ describe('validation rules', function() {
 			};
 			var obj = {
 				key: 'falmasi@b@businessinsider.com',
-				key2: './/@businessinsider.com',
+				key2: './/@businessinsiderm//',
 				key3: 'falmasi@string',
 				key4: 'falmasi@c.'
 			};
