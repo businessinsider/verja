@@ -403,13 +403,20 @@ describe('validation rules', function() {
 
 		it ('should tell if a given string is not an email', function(done) {
 			var schema = {
-				key: new verja.Field({email: true})
+				key: new verja.Field({email: true}),
+				key2: new verja.Field({email: true}),
+				key3: new verja.Field({email: true}),
+				key4: new verja.Field({email: true})
 			};
 			var obj = {
-				key: 'falmasi@b@businessinsider.com'
+				key: 'falmasi@b@businessinsider.com',
+				key2: './/@businessinsider.com',
+				key3: 'falmasi@string',
+				key4: 'falmasi@c.'
 			};
 			verja.validate(obj, schema, function(err) {
-				if (err) return done();
+				console.log(JSON.stringify(err));
+				if (JSON.stringify(err) === '{"key":{"email":true},"key2":{"email":true},"key3":{"email":true},"key4":{"email":true}}') return done();
 				throw err;
 			});
 		});
@@ -448,13 +455,17 @@ describe('validation rules', function() {
 		});
 		it ('should tell if a given string is not a url', function(done) {
 			var schema = {
-				key: new verja.Field({url: true})
+				key: new verja.Field({url: true}),
+				key2: new verja.Field({url: true}),
+				key3: new verja.Field({url: true})
 			};
 			var obj = {
-				key: 'http://gardenparty'
+				key: 'http://gardenparty',
+				key2: '8.8.8.8',
+				key3: 'gardenparty.biz'
 			};
 			verja.validate(obj, schema, function(err) {
-				if (err) return done();
+				if (JSON.stringify(err) === '{"key":{"url":true},"key2":{"url":true},"key3":{"url":true}}') return done();
 				throw err;
 			});
 		});

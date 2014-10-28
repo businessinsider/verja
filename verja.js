@@ -7,32 +7,32 @@
 			var valtype = Object.prototype.toString.call(val);
 			valtype = valtype.substr(8, valtype.length - 9).toLowerCase();
 
-			if (valtype === config) return callback(false);
+			if (valtype === config) { return callback(false); }
 			callback(true, 'type');
 		},
 		required: function(val, config, callback) {
-			if (val === undefined) return callback(true);
+			if (val === undefined) { return callback(true); }
 			callback(false);
 		},
 		max: function(val, config, callback) {
-			if (!val || val >= config) return callback(true);
+			if (!val || val >= config) { return callback(true); }
 			callback(false);	
 		},
 		min: function(val, config, callback) {
-			if (!val || val <= config) return callback(true);
+			if (!val || val <= config) { return callback(true); }
 			callback(false);
 		},
 		maxlength: function(val, config, callback) {
-			if (!val.length || val.length >= config) return callback(true);
+			if (!val.length || val.length >= config) { return callback(true); }
 			callback(false);
 		},
 		minlength: function(val, config, callback) {
-			if (!val.length || val.length <= config) return callback(true);
+			if (!val.length || val.length <= config) { return callback(true); }
 			callback(false);
 		},
 		int: function(val, config, callback) {
 			if (Math.round(val) === val) {
-				return callback(false);
+			 return callback(false);
 			}
 			callback(true);
 		},
@@ -68,7 +68,7 @@
 
 	function addValidator(name, func) {
 		validators[name] = function(val, config, callback) {
-			if (func(val, config)) return callback(true, name);
+			if (func(val, config)) { return callback(true, name); }
 			callback(false);
 		};
 	}
@@ -78,7 +78,7 @@
 		if (schema instanceof Field) {
 			Object.keys(schema).forEach(function(validatorName){
 				init.validateFuncs.push(function(callback) {
-					function validatorCallback(invalid, validatorName) {
+					function validatorCallback(invalid) {
 						if (invalid) {
 							errors[validatorName] = true;
 							init.errorTotal++;
