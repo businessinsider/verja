@@ -17,6 +17,9 @@
 			if (val === undefined) {
 				return callback(false);
 			}
+			if (!val && typeof val === 'string') {
+				return callback(false);
+			}
 			callback(true);
 		},
 		max: function(val, config, callback) {

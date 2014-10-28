@@ -30,7 +30,6 @@ describe('validation rules', function() {
 		});
 	});
 
-	//to do
 	describe('required', function() {
 
 		var schema = {
@@ -46,6 +45,36 @@ describe('validation rules', function() {
 				if (!err) return done();
 				throw err;
 			});
+		});
+
+		it ('should not pass on an empty string', function(done) {
+			var obj = {
+				key: ''
+			};
+			var schema = {
+				key: new verja.Field({required: true})
+			};
+
+			verja.validate(obj, schema, function(err) {
+				if (err) return done(); 
+				throw err;
+			});
+
+		});
+
+		it ('should pass on a longer string', function(done) {
+			var obj = {
+				key: 'hi'
+			};
+			var schema = {
+				key: new verja.Field({required: true})
+			};
+			
+			verja.validate(obj, schema, function(err) {
+				if (!err) return done(); 
+				throw err;
+			});
+
 		});
 
 		it ('should show up in the error object if the property isn\'t there', function(done) {
