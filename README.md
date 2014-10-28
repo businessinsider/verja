@@ -74,8 +74,7 @@ var schema = {
 };
 ```
 
-You can add custom validators like this. Pass true to the callback if the field is valid, false if it is not
-All validators are assumed to be async so returning will not do anything, you must use the callback
+You can add custom validators like this. Pass true to the callback if the field is valid, false if it is not.  All validators are assumed to be async so returning will not do anything, you must use the callback
 
 Config will be the value of the validator property on the Field object passed into the schema
 
