@@ -1,7 +1,9 @@
 'use strict';
 
-var assert = require('assert');
-var verja = require('../verja.js');
+if (typeof require !== 'undefined') {
+	var assert = require('assert');
+	var verja = require('../../verja.js');
+}
 
 describe('verja API', function() {
 

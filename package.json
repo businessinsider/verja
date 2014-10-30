@@ -1,29 +1,32 @@
 {
-	"name": "verja",
-	"version": "0.0.1",
-	"description": "A schema based object validator",
-	"license": "MIT",
-	"scripts": {
-		"test": "mocha tests/" 
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/businessinsider/verja/"
-	},
-	"bugs": {
-		"url": "https://github.com/businessinsider/verja/issues"
-	},
-	"main": "verja.js",
-	"keywords": [
-		"validator",
-		"validation",
-		"schema",
-		"type",
-		"object validation",
-		"object validator",
-		"object"
-	],
-	"devDependencies": {
-		"mocha": "^1.21.5"
-	}
+  "name": "verja",
+  "version": "0.0.1",
+  "description": "A schema based object validator",
+  "license": "MIT",
+  "scripts": {
+    "test": "mocha tests/spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/businessinsider/verja/"
+  },
+  "bugs": {
+    "url": "https://github.com/businessinsider/verja/issues"
+  },
+  "main": "verja.js",
+  "keywords": [
+    "validator",
+    "validation",
+    "schema",
+    "type",
+    "object validation",
+    "object validator",
+    "object"
+  ],
+  "devDependencies": {
+    "chai": "^1.9.2",
+    "karma": "^0.12.24",
+    "karma-mocha": "^0.1.9",
+    "mocha": "^1.21.5"
+  }
 }

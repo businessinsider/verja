@@ -1,9 +1,11 @@
 'use strict';
 
-var verja = require('../verja.js');
+if (typeof require !== 'undefined') {
+	var verja = require('../../verja.js');
+}
 
 describe('validation rules', function() {
-	
+
 	//need to fix the lib to return null for no errors so this works
 	describe('type', function() {
 		var schema = {
@@ -53,13 +55,13 @@ describe('validation rules', function() {
 				property: undefined
 			};
 			verja.validate(obj, schema, function(err) {
-				if (err) return done(); 
+				if (err) return done();
 				throw err;
 			});
 		});
 
 	});
-	
+
 	describe('maxlength', function() {
 
 		var schema = {
