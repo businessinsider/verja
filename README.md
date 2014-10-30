@@ -42,7 +42,10 @@ Verja schemas support nested objects and arrays
 ```
 var schema = {
 	key: {
-			key2: [new verja.Field({type: 'string'})],
+			key2: new verja.Field({
+				itemSchema: new verja.Field({type: 'string'}),
+				minlength: 2
+			})
 			key3: new verja.Field({type: 'number', max: 100})
 	},
 	key4: new verja.Field({required: true})
