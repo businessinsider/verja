@@ -2,4 +2,8 @@ bower_components/
 node_modules/
 npm-debug.log
 .DS_Store
+<<<<<<< HEAD
 test-results.xml
+=======
+playground.js
+>>>>>>> 23812a7b84858d577989bb7440a3f7e6456568e4

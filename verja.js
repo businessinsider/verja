@@ -1,4 +1,5 @@
-;(function(undefined) {
+;
+(function(undefined) {
 	'use strict';
 
 	var validators = {
@@ -7,37 +8,100 @@
 			var valtype = Object.prototype.toString.call(val);
 			valtype = valtype.substr(8, valtype.length - 9).toLowerCase();
 
-			if (valtype === config) return callback(false);
-			callback(true, 'type');
+			if (valtype === config) {
+				return callback(true);
+			}
+			callback(false, 'type');
 		},
 		required: function(val, config, callback) {
-			if (val === undefined) return callback(true, 'required');
-			callback(false);
+			if (val === undefined) {
+				return callback(false);
+			}
+			if (!val && typeof val === 'string') {
+				return callback(false);
+			}
+			callback(true);
+		},
+		max: function(val, config, callback) {
+			if (!val || val >= config) {
+				return callback(false);
+			}
+			callback(true);
+		},
+		min: function(val, config, callback) {
+			if (!val || val <= config) {
+				return callback(false);
+			}
+			callback(true);
 		},
 		maxlength: function(val, config, callback) {
-			if (!val.length || val.length >= config) return callback(true, 'maxlength');
-			callback(false);
+			if (!val.length || val.length >= config) {
+				return callback(false);
+			}
+			callback(true);
 		},
 		minlength: function(val, config, callback) {
-			if (!val.length || val.length <= config) return callback(true, 'minlength');
+			if (!val.length || val.length <= config) {
+				return callback(false);
+			}
+			callback(true);
+		},
+		int: function(val, config, callback) {
+			if (Math.round(val) === val) {
+				return callback(true);
+			}
+			callback(false);
+		},
+		equals: function(val, config, callback) {
+			if (val === config) {
+				return callback(true);
+			}
+			callback(false);
+		},
+		regex: function(val, config, callback) {
+			if (val.search(config) > -1) {
+				return callback(true);
+			}
+			callback(false);
+		},
+		email: function(val, config, callback) {
+			var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+			if (regex.test(val)) {
+				return callback(true);
+			}
+			callback(false);
+		},
+		url: function(val, config, callback) {
+			var regex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)/;
+
+			if (regex.test(val)) {
+				return callback(true);
+			}
 			callback(false);
 		}
 	};
 
 	function addValidator(name, func) {
-		validators[name] = function(val, config, callback) {
-			if (func(val, config)) return callback(true, name);
-			callback(false);
-		};
+		validators[name] = func;
 	}
 
 	function runValidators(object, schema, errors, init) {
 		// if the schema is a field validate the property
 		if (schema instanceof Field) {
-			Object.keys(schema).forEach(function(validatorName){
+			if (schema.itemSchema) {
+				object.forEach(function(arrayValue, index) {
+					if (!errors[index]) {
+						errors[index] = {};
+					}
+					runValidators(object[index], schema.itemSchema, errors[index], init);
+				});
+				delete schema.itemSchema;
+			}
+			Object.keys(schema).forEach(function(validatorName) {
 				init.validateFuncs.push(function(callback) {
-					function validatorCallback(invalid, validatorName) {
-						if (invalid) {
+					function validatorCallback(valid) {
+						if (!valid) {
 							errors[validatorName] = true;
 							init.errorTotal++;
 						}
@@ -53,16 +117,20 @@
 			});
 		}
 		//if its an array recurse over all the values in the object
-		else if (schema instanceof Array && object instanceof Array) {
-			object.forEach(function(arrayValue, index){
-				if (!errors[index]) { errors[index] = {}; }
-				runValidators(object[index], schema[0], errors[index], init);
-			});
-		}
+		// else if (schema instanceof Array && object instanceof Array) {
+		// 	object.forEach(function(arrayValue, index) {
+		// 		if (!errors[index]) {
+		// 			errors[index] = {};
+		// 		}
+		// 		runValidators(object[index], schema[0], errors[index], init);
+		// 	});
+		// }
 		//otherwise go through the keys on the schema and recurse
 		else if (schema instanceof Object && object instanceof Object) {
-			Object.keys(schema).forEach(function(property){
-				if (!errors[property]) { errors[property] = {}; }
+			Object.keys(schema).forEach(function(property) {
+				if (!errors[property]) {
+					errors[property] = {};
+				}
 				runValidators(object[property], schema[property], errors[property], init);
 			});
 		} else {
@@ -83,7 +151,7 @@
 		runValidators(object, schema, errors, init);
 		init.totalValidators = init.validateFuncs.length;
 
-		init.validateFuncs.forEach(function(func){
+		init.validateFuncs.forEach(function(func) {
 			func(function() {
 				if (!init.errorTotal) {
 					return callback(null);
@@ -102,13 +170,13 @@
 	var exports = {
 		addValidator: addValidator,
 		validate: validate,
-		validators: validators,
-		Field: Field
+		Field: Field,
+		validators: validators
 	};
 
 	if (typeof window !== 'undefined') {
 		window.verja = window.verja || exports;
-	} else {
+	} else if (module) {
 		module.exports = exports;
 	}
 
