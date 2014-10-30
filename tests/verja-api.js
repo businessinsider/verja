@@ -94,18 +94,35 @@ describe ('verja API', function() {
 			key2: new verja.Field({required: true, type: 'boolean'})
 		};
 
-		it ('should validate an array', function(done) {
+		it ('should validate an array\'s members', function(done) {
 			var objArr = {
 				key: ['string', {}]
 			};
 			var arrSch = {
-				key: [new verja.Field({type: 'string'})]
+				key: new verja.Field({
+					itemSchema: new verja.Field({type: 'string'})
+				})
 			};
 			verja.validate(objArr,arrSch, function(e) {
 				assert.equal(JSON.stringify(e), JSON.stringify({key: {0: {}, 1: {type:true}}}));
 				done();
 			});
+		});
 
+		it ('should validate an array\'s members and the array itself', function(done) {
+			var objArr = {
+				key: ['string', {}]
+			};
+			var arrSch = {
+				key: new verja.Field({
+					itemSchema: new verja.Field({type: 'string'}),
+					minlength: 5
+				})
+			};
+			verja.validate(objArr,arrSch, function(e) {
+				assert.equal(JSON.stringify(e), JSON.stringify({key: {0: {}, 1: {type:true}, minlength: true}}));
+				done();
+			});
 		});
 
 		it ('should validate a primative', function(done) {

@@ -89,6 +89,15 @@
 	function runValidators(object, schema, errors, init) {
 		// if the schema is a field validate the property
 		if (schema instanceof Field) {
+			if (schema.itemSchema) {
+				object.forEach(function(arrayValue, index) {
+					if (!errors[index]) {
+						errors[index] = {};
+					}
+					runValidators(object[index], schema.itemSchema, errors[index], init);
+				});
+				delete schema.itemSchema;
+			}
 			Object.keys(schema).forEach(function(validatorName) {
 				init.validateFuncs.push(function(callback) {
 					function validatorCallback(valid) {
@@ -108,14 +117,14 @@
 			});
 		}
 		//if its an array recurse over all the values in the object
-		else if (schema instanceof Array && object instanceof Array) {
-			object.forEach(function(arrayValue, index) {
-				if (!errors[index]) {
-					errors[index] = {};
-				}
-				runValidators(object[index], schema[0], errors[index], init);
-			});
-		}
+		// else if (schema instanceof Array && object instanceof Array) {
+		// 	object.forEach(function(arrayValue, index) {
+		// 		if (!errors[index]) {
+		// 			errors[index] = {};
+		// 		}
+		// 		runValidators(object[index], schema[0], errors[index], init);
+		// 	});
+		// }
 		//otherwise go through the keys on the schema and recurse
 		else if (schema instanceof Object && object instanceof Object) {
 			Object.keys(schema).forEach(function(property) {
