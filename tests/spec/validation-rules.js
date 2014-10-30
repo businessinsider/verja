@@ -4,10 +4,9 @@ if (typeof require !== 'undefined') {
 	var verja = require('../../verja.js');
 }
 
-describe('validation rules', function() {
-
+describe ('validation rules', function() {
 	//need to fix the lib to return null for no errors so this works
-	describe('type', function() {
+	describe ('type', function() {
 		var schema = {
 			property: new verja.Field({type: 'string'})
 		};
@@ -32,7 +31,7 @@ describe('validation rules', function() {
 		});
 	});
 
-	describe('required', function() {
+	describe ('required', function() {
 
 		var schema = {
 			property: new verja.Field({required: true})
@@ -91,7 +90,7 @@ describe('validation rules', function() {
 
 	});
 
-	describe('max', function() {
+	describe ('max', function() {
 		var schema = {
 			key: new verja.Field({max: 5})
 		};
@@ -126,7 +125,7 @@ describe('validation rules', function() {
 
 	});
 
-	describe('min', function() {
+	describe ('min', function() {
 		var schema = {
 			key: new verja.Field({min: 5})
 		};
@@ -160,7 +159,6 @@ describe('validation rules', function() {
 		});
 
 	});
-
 	describe('maxlength', function() {
 
 		var schema = {
@@ -197,7 +195,7 @@ describe('validation rules', function() {
 
 	});
 
-	describe('minlength', function() {
+	describe ('minlength', function() {
 
 		var schema = {
 			key: new verja.Field({minlength: 5})
@@ -230,7 +228,7 @@ describe('validation rules', function() {
 
 	});
 
-	describe('int', function() {
+	describe ('int', function() {
 		var schema = {
 			key: new verja.Field({int: true})
 		};
@@ -279,7 +277,7 @@ describe('validation rules', function() {
 
 	});
 
-	describe('equals', function() {
+	describe ('equals', function() {
 
 		it ('should pass when a string is equal', function(done) {
 			var schema = {
