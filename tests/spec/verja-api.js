@@ -11,11 +11,6 @@ if (typeof require !== 'undefined') {
 }
 
 describe ('verja API', function() {
-	describe('brokentest', function() {
-		it('is broke', function() {
-			throw new Error();
-		})
-	})
 	describe ('addValidator', function() {
 
 		it ('addValidator adds a validator', function() {
