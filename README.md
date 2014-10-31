@@ -72,6 +72,7 @@ var schema = {
 	everything: new verja.Field({
 			type: 'lowercase, string version of type',
 			required: true,
+			requiredIf: true,
 			equals: 'this can also take an object pointer'
 	})
 };

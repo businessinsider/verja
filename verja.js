@@ -22,6 +22,17 @@
 			}
 			callback(true);
 		},
+		requiredIf: function(val, config, callback) {
+			if (config) {
+				if (val === undefined) {
+					return callback(false);
+				}
+				if (!val && typeof val === 'string') {
+					return callback(false);
+				}
+			}
+			callback(true);
+		},
 		max: function(val, config, callback) {
 			if (!val || val >= config) {
 				return callback(false);
@@ -89,6 +100,7 @@
 	function runValidators(object, schema, errors, init) {
 		// if the schema is a field validate the property
 		if (schema instanceof Field) {
+			// if array with itemSchema, validate each member of the array according to the schema
 			if (schema.itemSchema) {
 				object.forEach(function(arrayValue, index) {
 					if (!errors[index]) {
@@ -116,15 +128,6 @@
 				});
 			});
 		}
-		//if its an array recurse over all the values in the object
-		// else if (schema instanceof Array && object instanceof Array) {
-		// 	object.forEach(function(arrayValue, index) {
-		// 		if (!errors[index]) {
-		// 			errors[index] = {};
-		// 		}
-		// 		runValidators(object[index], schema[0], errors[index], init);
-		// 	});
-		// }
 		//otherwise go through the keys on the schema and recurse
 		else if (schema instanceof Object && object instanceof Object) {
 			Object.keys(schema).forEach(function(property) {

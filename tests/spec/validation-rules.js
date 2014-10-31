@@ -90,6 +90,50 @@ describe ('validation rules', function() {
 
 	});
 
+	describe ('requiredIf', function() {
+
+		var schema = {
+			key: new verja.Field({requiredIf: true})
+		};
+
+		var falseSchema = {
+			key: new verja.Field({requiredIf: false})
+		};
+
+		var obj = {
+			key: 'value'
+		};
+
+		it ('should throw an error if the condition is true and the value is not there', function(done) {
+			verja.validate({}, schema, function(err) {
+				if (err) return done();
+				throw err;
+			});
+		});
+
+		it ('should not throw an error if the condition is false and the value is not there', function(done) {
+			verja.validate({}, falseSchema, function(err) {
+				if (!err) return done();
+				throw err;
+			});
+		});
+
+		it ('should not throw an error if the condition is false and the value is there', function(done) {
+			verja.validate(obj, falseSchema, function(err) {
+				if (!err) return done();
+				throw err;
+			});
+		});
+
+		it ('should not throw an error if the condition is true and the value is there', function(done) {
+			verja.validate(obj, schema, function(err) {
+				if (!err) return done();
+				throw err;
+			});
+		});
+
+	});
+
 	describe ('max', function() {
 		var schema = {
 			key: new verja.Field({max: 5})

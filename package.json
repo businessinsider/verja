@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "test": "mocha tests/spec",
-    "jenkinsTest": "mocha tests/ -R xunit-file",
+    "jenkinsTest": "mocha tests/spec -R xunit-file",
     "minify": "uglifyjs verja.js -o \"verja.min.js\""
   },
   "repository": {
