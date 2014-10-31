@@ -34,12 +34,12 @@ describe ('validation rules', function() {
 	describe ('required', function() {
 
 		var schema = {
-			property: new verja.Field({required: true})
+			key: new verja.Field({required: true})
 		};
 
-		it ('should check if the property is there', function(done) {
+		it ('should check if the key is there', function(done) {
 			var obj = {
-				property: 'here i am!'
+				key: 'here i am!'
 			};
 
 			verja.validate(obj, schema, function(err) {
@@ -88,16 +88,12 @@ describe ('validation rules', function() {
 			});
 		});
 
-	});
-
-	describe ('requiredIf', function() {
-
 		var schema = {
-			key: new verja.Field({requiredIf: true})
+			key: new verja.Field({required: true})
 		};
 
 		var falseSchema = {
-			key: new verja.Field({requiredIf: false})
+			key: new verja.Field({required: false})
 		};
 
 		var obj = {

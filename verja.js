@@ -14,15 +14,6 @@
 			callback(false, 'type');
 		},
 		required: function(val, config, callback) {
-			if (val === undefined) {
-				return callback(false);
-			}
-			if (!val && typeof val === 'string') {
-				return callback(false);
-			}
-			callback(true);
-		},
-		requiredIf: function(val, config, callback) {
 			if (config) {
 				if (val === undefined) {
 					return callback(false);
