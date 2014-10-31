@@ -7,7 +7,6 @@
 		type: function(val, config, callback) {
 			var valtype = Object.prototype.toString.call(val);
 			valtype = valtype.substr(8, valtype.length - 9).toLowerCase();
-
 			if (valtype === config) {
 				return callback(true);
 			}
@@ -15,35 +14,32 @@
 		},
 		required: function(val, config, callback) {
 			if (config) {
-				if (val === undefined) {
-					return callback(false);
-				}
-				if (!val && typeof val === 'string') {
+				if (!val || typeof val === undefined) {
 					return callback(false);
 				}
 			}
 			callback(true);
 		},
 		max: function(val, config, callback) {
-			if (!val || val >= config) {
+			if (typeof val !== 'number' || !val || val > config) {
 				return callback(false);
 			}
 			callback(true);
 		},
 		min: function(val, config, callback) {
-			if (!val || val <= config) {
+			if (typeof val !== 'number' || !val || val < config) {
 				return callback(false);
 			}
 			callback(true);
 		},
 		maxlength: function(val, config, callback) {
-			if (!val.length || val.length >= config) {
+			if (!val || !val.length || val.length > config) {
 				return callback(false);
 			}
 			callback(true);
 		},
 		minlength: function(val, config, callback) {
-			if (!val.length || val.length <= config) {
+			if (!val || !val.length || val.length < config) {
 				return callback(false);
 			}
 			callback(true);
@@ -67,6 +63,7 @@
 			callback(false);
 		},
 		email: function(val, config, callback) {
+			if (typeof val !== 'string') { return callback(false); }
 			var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 			if (regex.test(val)) {
