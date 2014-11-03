@@ -100,22 +100,23 @@
 				}
 			}
 			Object.keys(schema).forEach(function(validatorName) {
-				if (validatorName === 'itemSchema') { return; }
-				init.validateFuncs.push(function(callback) {
-					function validatorCallback(valid) {
-						if (!valid) {
-							errors[validatorName] = true;
-							init.errorTotal++;
-						}
-						init.totalValidated++;
+				if (validatorName !== 'itemSchema') {
+					init.validateFuncs.push(function(callback) {
+						function validatorCallback(valid) {
+							if (!valid) {
+								errors[validatorName] = true;
+								init.errorTotal++;
+							}
+							init.totalValidated++;
 
-						if (init.totalValidated === init.totalValidators) {
-							callback();
+							if (init.totalValidated === init.totalValidators) {
+								callback();
+							}
 						}
-					}
-					//call the validator
-					validators[validatorName](object, schema[validatorName], validatorCallback);
-				});
+						//call the validator
+						validators[validatorName](object, schema[validatorName], validatorCallback);
+					});
+				}
 			});
 		}
 		//otherwise go through the keys on the schema and recurse
@@ -140,6 +141,7 @@
 			errorTotal: 0,
 			validateFuncs: []
 		};
+
 
 		runValidators(object, schema, errors, init);
 		init.totalValidators = init.validateFuncs.length;
