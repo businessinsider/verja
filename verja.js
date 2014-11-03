@@ -90,15 +90,17 @@
 		if (schema instanceof Field) {
 			// if array with itemSchema, validate each member of the array according to the schema
 			if (schema.itemSchema) {
-				object.forEach(function(arrayValue, index) {
-					if (!errors[index]) {
-						errors[index] = {};
-					}
-					runValidators(object[index], schema.itemSchema, errors[index], init);
-				});
-				delete schema.itemSchema;
+				if (object) {
+					object.forEach(function(arrayValue, index) {
+						if (!errors[index]) {
+							errors[index] = {};
+						}
+						runValidators(object[index], schema.itemSchema, errors[index], init);
+					});
+				}
 			}
 			Object.keys(schema).forEach(function(validatorName) {
+				if (validatorName === 'itemSchema') { return; }
 				init.validateFuncs.push(function(callback) {
 					function validatorCallback(valid) {
 						if (!valid) {
