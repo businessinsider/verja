@@ -100,7 +100,7 @@
 				} 
 
 			}
-			Object.keys(schema).forEach(function(validatorName) {
+			Object.keys(schema).forEach(function(validatorName, index) {
 				if (validators[validatorName]) {
 					init.validateFuncs.push(function(callback) {
 						function validatorCallback(valid) {
@@ -117,6 +117,8 @@
 						//call the validator
 						validators[validatorName](object, schema[validatorName], validatorCallback);
 					});
+				} else {
+					//handle non validator keys here
 				}
 			});
 		}
