@@ -126,7 +126,6 @@ describe('itemSchema validation rule', function() {
 		verja.validate(poll, pollSchema, function(e) {
 			if (!e) return done();
 			throw e;
-
 		});
 	});
 
