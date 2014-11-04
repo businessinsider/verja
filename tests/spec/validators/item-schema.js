@@ -36,7 +36,7 @@ describe('itemSchema validation rule', function() {
 		questions: new verja.Field({
 			type: 'array',
 			minlength: 1,
-			itemSchema: new verja.Field({
+			itemSchema: {
 				text: new verja.Field({
 					required: true,
 					type: 'string'
@@ -45,7 +45,7 @@ describe('itemSchema validation rule', function() {
 					type: 'array',
 					minlength: 2
 				})
-			})
+			}
 		})
 	};
 
@@ -135,15 +135,26 @@ describe('itemSchema validation rule', function() {
 			questions: [{text: 'xxx', answers: ''}]
 		};
 
-		throw 'we need to figure out what to do for this schema';
-
 		verja.validate(poll, pollSchema, function(e) {
-			if (JSON.stringify(e) === 'what should this error look like?') {
+			if (JSON.stringify(e) === '{"questions":{"0":{"text":{},"answers":{"type":true,"minlength":true}}}}') {
 				return done();
 			}
 			throw e;
 		});
+	});
 
+	it('should handle a flat array', function(done){
+		verja.validate({arrayItem: ['astring']}, {
+			arrayItem: new verja.Field({
+				type: 'array',
+				itemSchema: new verja.Field({
+					type: 'string'
+				})
+			})
+		}, function(e) {
+			if (!e) { return done(); }
+			throw e;
+		})
 	});
 
 });

@@ -63,7 +63,9 @@
 			callback(false);
 		},
 		email: function(val, config, callback) {
-			if (typeof val !== 'string') { return callback(false); }
+			if (typeof val !== 'string') {
+				return callback(false);
+			}
 			var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 			if (regex.test(val)) {
@@ -85,38 +87,50 @@
 		validators[name] = func;
 	}
 
-	function runValidators(object, schema, errors, init) {
-		// if the schema is a field validate the property
-		if (schema instanceof Field) {
-			// if array with itemSchema, validate each member of the array according to the schema
-			if (schema.itemSchema) {
-				if (Array.isArray(object)) {
-					object.forEach(function(arrayValue, index) {
-						if (!errors[index]) {
-							errors[index] = {};
-						}
-						runValidators(object[index], schema.itemSchema, errors[index], init);
-					});
-				} 
+	function validate(object, schema, callback) {
+		//create a schema and accumulate all of its validators
+		var s = new Schema(schema, callback);
+		//accumulate all the validation functions we need to run over the object
+		s.accumulateValidators(object);
+		//run them all
+		s.run();
+	}
 
+	function Schema(schema, userCallback) {
+		var self = this;
+		this.schema = schema;
+
+		this.errors = {};
+		this.validationStatus = {
+			totalValidators: 0,
+			totalValidated: 0,
+			errorTotal: 0,
+		};
+		this.validateFuncs = [];
+		this.userCallback = userCallback;
+	}
+
+	Schema.prototype.accumulateValidators = function(object, schema, errors) {
+		var self = this;
+		if (!schema) {
+			schema = self.schema;
+		}
+		if (!errors) {
+			errors = self.errors;
+		}
+
+		if (schema instanceof Field) {
+			// if array with itemSchema, we need to add a validation function for each item in the array
+			if (schema.itemSchema && Array.isArray(object)) {
+				object.forEach(function(arrayValue, index) {
+					self.addPropertyToErrors(errors, index);
+					self.accumulateValidators(object[index], schema.itemSchema, errors[index]);
+				});
 			}
+			//Add a validator for each one declared on the Field
 			Object.keys(schema).forEach(function(validatorName, index) {
 				if (validators[validatorName]) {
-					init.validateFuncs.push(function(callback) {
-						function validatorCallback(valid) {
-							if (!valid) {
-								errors[validatorName] = true;
-								init.errorTotal++;
-							}
-							init.totalValidated++;
-
-							if (init.totalValidated === init.totalValidators) {
-								callback();
-							}
-						}
-						//call the validator
-						validators[validatorName](object, schema[validatorName], validatorCallback);
-					});
+					self.addValidationFunction(object, schema, errors, validatorName);
 				} else {
 					//handle non validator keys here
 				}
@@ -125,38 +139,61 @@
 		//otherwise go through the keys on the schema and recurse
 		else if (schema instanceof Object && object instanceof Object) {
 			Object.keys(schema).forEach(function(property) {
-				if (!errors[property]) {
-					errors[property] = {};
-				}
-				runValidators(object[property], schema[property], errors[property], init);
+				self.addPropertyToErrors(errors, property);
+				self.accumulateValidators(object[property], schema[property], errors[property]);
 			});
 		} else {
 			// this should never happen, if it does, we aren't handling an object/schema construction error properly
 			throw new Error('Internal Validation error for ', object, schema, errors);
 		}
-	}
+	};
 
-	function validate(object, schema, callback) {
-		var errors = {};
-		var init = {
-			totalValidators: 0,
-			totalValidated: 0,
-			errorTotal: 0,
-			validateFuncs: []
-		};
-
-		runValidators(object, schema, errors, init);
-		init.totalValidators = init.validateFuncs.length;
-
-		init.validateFuncs.forEach(function(func) {
-			func(function() {
-				if (!init.errorTotal) {
-					return callback(null);
-				}
-				callback(errors);
-			});
+	Schema.prototype.addValidationFunction = function(object, schema, errors, validatorName) {
+		var self = this;
+		self.validateFuncs.push(function() {
+			var validatorCallback = self.generateValidatorCallback(object, schema, errors, validatorName);
+			//call the validator
+			validators[validatorName](object, schema[validatorName], validatorCallback);
 		});
-	}
+		self.validationStatus.totalValidators++;
+	};
+
+	//generates the internal callback for the validator
+	Schema.prototype.generateValidatorCallback = function(object, schema, errors, validatorName) {
+		var self = this;
+		return function(valid) {
+			//set the error if it was invalid
+			if (!valid) {
+				errors[validatorName] = true;
+				self.validationStatus.errorTotal++;
+			}
+			self.validationStatus.totalValidated++;
+
+			self.checkValidationComplete();
+		};
+	};
+
+	Schema.prototype.addPropertyToErrors = function(errors, property) {
+		if (!errors[property]) {
+			errors[property] = {};
+		}
+	};
+
+	Schema.prototype.run = function() {
+		this.validateFuncs.forEach(function(func) {
+			func();
+		});
+	};
+
+	Schema.prototype.checkValidationComplete = function() {
+		var self = this;
+		if (self.validationStatus.totalValidated === self.validationStatus.totalValidators) {
+			if (!self.validationStatus.errorTotal) {
+				return self.userCallback(null);
+			}
+			self.userCallback(self.errors);
+		}
+	};
 
 	function Field(props) {
 		for (var prop in props) {
