@@ -101,7 +101,7 @@
 
 			}
 			Object.keys(schema).forEach(function(validatorName) {
-				if (validatorName !== 'itemSchema') {
+				if (validators[validatorName]) {
 					init.validateFuncs.push(function(callback) {
 						function validatorCallback(valid) {
 							if (!valid) {
@@ -142,7 +142,6 @@
 			errorTotal: 0,
 			validateFuncs: []
 		};
-
 
 		runValidators(object, schema, errors, init);
 		init.totalValidators = init.validateFuncs.length;
