@@ -4,7 +4,7 @@
   "description": "A schema based object validator",
   "license": "MIT",
   "scripts": {
-    "test": "mocha tests/spec/*",
+    "test": "mocha tests/spec/validators/item-schema.js",
     "jenkinsTest": "mocha tests/spec -R xunit-file",
     "minify": "uglifyjs verja.js -o \"verja.min.js\""
   },
