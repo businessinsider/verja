@@ -201,11 +201,25 @@
 		}
 	}
 
+	function strip (obj) {
+		var obj2 = new Field(obj);
+
+		Object.keys(obj2).forEach(function(x) {
+			if (obj2[x] instanceof Object && !Object.keys(obj2[x]).length) {
+				delete obj2[x];
+			} else if (obj2[x] instanceof Object) {
+				obj2[x] = strip(obj2[x]);
+			}
+		});
+		return obj2;
+	} 
+
 	var exports = {
 		addValidator: addValidator,
 		validate: validate,
 		Field: Field,
-		validators: validators
+		validators: validators,
+		strip: strip
 	};
 
 	if (typeof window !== 'undefined') {
