@@ -257,13 +257,12 @@ describe('verja API', function() {
 					key4: {}
 				}
 			};
-			if (JSON.stringify(verja.strip(obj)) !== '{"key2":"value"}') {
-				throw err;
-			} else {
+			if (JSON.stringify(verja.strip(obj)) === '{"key2":"value"}') {
 				return done();
+			} else {
+				throw JSON.stringify(verja.strip(obj));
 			}
 		});
-
 
 		it('should do nothing to an empty object', function(done) {
 			var obj = new Object();

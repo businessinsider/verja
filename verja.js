@@ -203,13 +203,12 @@
 
 	function strip (obj) {
 		var obj2 = new Field(obj);
-
 		Object.keys(obj2).forEach(function(x) {
 			if (obj2[x] instanceof Object && !Object.keys(obj2[x]).length) {
 				delete obj2[x];
+				obj2 = strip(obj2);
 			} else if (obj2[x] instanceof Object) {
 				obj2[x] = strip(obj2[x]);
-				obj2 = strip(obj2);
 			}
 		});
 		return obj2;
