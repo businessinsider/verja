@@ -201,18 +201,38 @@
 		}
 	}
 
-	function strip (obj) {
-		var obj2 = new Field(obj);
-		Object.keys(obj2).forEach(function(x) {
-			if (obj2[x] instanceof Object && !Object.keys(obj2[x]).length) {
-				delete obj2[x];
-				obj2 = strip(obj2);
-			} else if (obj2[x] instanceof Object) {
-				obj2[x] = strip(obj2[x]);
+	/*
+		Recursively removes empty objects from an object of arbitrary depth.
+		Copies the object first to not modify the original
+
+		ex: turns {
+			prop: {},
+			prop2: {some: {}, thing: 5}
+		}
+
+		into
+		{
+			prop2: {thing: 5}
+		}
+ 	*/
+	function strip(obj, isRecurse) {
+		//make a copy of the object the first time so we dont modify the original
+		if (!isRecurse) { obj = new Field(obj); }
+		//go through each property on the object
+		Object.keys(obj).forEach(function(key) {
+			//if its an object and has no properties
+			if (obj[key] instanceof Object && !Object.keys(obj[key]).length) {
+				//delete it
+				delete obj[key];
+				//call the whole thing again so we can strip the parent if necessary
+				obj = strip(obj, true);
+			} else if (obj[key] instanceof Object) {
+				//otherwise recurse
+				obj[key] = strip(obj[key], true);
 			}
 		});
-		return obj2;
-	} 
+		return obj;
+	}
 
 	var exports = {
 		addValidator: addValidator,

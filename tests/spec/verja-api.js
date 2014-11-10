@@ -23,7 +23,7 @@ describe('verja API', function() {
 
 		it('addValidator adds a validator', function() {
 			verja.addValidator('haskey', function(val, config, callback) {
-				return callback(false)
+				return callback(false);
 			});
 
 			assert.equal(true, !!verja.validators.haskey);
@@ -219,7 +219,7 @@ describe('verja API', function() {
 				})
 			}, function(err) {
 				if (!err) { return done(); }
-				throw new Error('failed for array property on schema but no array in object')
+				throw new Error('failed for array property on schema but no array in object');
 			});
 		});
 
@@ -230,7 +230,7 @@ describe('verja API', function() {
 					throw new Error('modified the schema, bad, very bad.');
 				}
 				done();
-			})
+			});
 		});
 
 	});
