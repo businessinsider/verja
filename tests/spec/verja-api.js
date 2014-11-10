@@ -223,7 +223,7 @@ describe('verja API', function() {
 			});
 		});
 
-		it('should not modify the schema', function(done){
+		it('should not modify the schema', function(done) {
 			var s = {someprop: new verja.Field({type: 'array', itemSchema: new verja.Field({})})};
 			verja.validate({}, s, function(){
 				if (JSON.stringify(s) !== '{"someprop":{"type":"array","itemSchema":{}}}') {
@@ -231,6 +231,47 @@ describe('verja API', function() {
 				}
 				done();
 			})
+		});
+
+	});
+
+	describe('strip', function() {
+
+		it('should strip empty objects from a simple object', function(done) {
+			var obj = {
+				key: {},
+				key2: 'value'
+			};
+			if (JSON.stringify(verja.strip(obj)) !== '{"key2":"value"}') {
+				throw err;
+			} else {
+				return done();
+			}
+		});
+
+		it('should strip empty objects from a nested object', function(done) {
+			var obj = {
+				key: {},
+				key2: 'value',
+				key3: {
+					key4: {}
+				}
+			};
+			if (JSON.stringify(verja.strip(obj)) !== '{"key2":"value"}') {
+				throw err;
+			} else {
+				return done();
+			}
+		});
+
+
+		it('should do nothing to an empty object', function(done) {
+			var obj = new Object();
+			if (JSON.stringify(verja.strip(obj)) !== "{}") {
+				throw err;
+			} else {
+				done();
+			}
 		});
 
 	});

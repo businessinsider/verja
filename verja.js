@@ -209,6 +209,7 @@
 				delete obj2[x];
 			} else if (obj2[x] instanceof Object) {
 				obj2[x] = strip(obj2[x]);
+				obj2 = strip(obj2);
 			}
 		});
 		return obj2;
