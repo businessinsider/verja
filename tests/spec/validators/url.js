@@ -15,6 +15,13 @@ describe ('url validation rule', function() {
 		});
 	});
 
+	it ('should not throw an error on an empty string', function(done) {
+		verja.validators.url('', true, function(valid) {
+			if (valid) { return done(); }
+			throw new Error('empty string url invalid');
+		});
+	});
+
 	it ('should not throw a false positive for a url of all spaces', function(done) {
 		verja.validators.url('          ', true, function(valid) {
 			if (!valid) { return done(); }
