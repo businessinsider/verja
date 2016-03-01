@@ -63,6 +63,7 @@
 			callback(false);
 		},
 		email: function(val, config, callback) {
+			if (!val) return callback(true);
 			if (typeof val !== 'string') {
 				return callback(false);
 			}

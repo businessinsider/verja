@@ -23,4 +23,11 @@ describe ('email validation rule', function() {
 		});
 	});
 
+	it ('should do nothing for falsy values', function(done) {
+		verja.validators.email(null, true, function(valid){
+			if (valid) { return done(); }
+			throw new Error('failed falsy input');
+		});
+	});
+
 });
