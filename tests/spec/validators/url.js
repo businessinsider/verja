@@ -14,7 +14,12 @@ describe ('url validation rule', function() {
 			throw new Error('invalid url failed');
 		});
 	});
-
+	it ('should pass on falsy values', function(done) {
+		verja.validators.url(null, true, function(valid) {
+			if (valid) { return done(); }
+			throw new Error('falsy null url failed');
+		});
+	});
 	it ('should not throw an error on an empty string', function(done) {
 		verja.validators.url('', true, function(valid) {
 			if (valid) { return done(); }
