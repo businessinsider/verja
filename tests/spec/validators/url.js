@@ -40,4 +40,11 @@ describe ('url validation rule', function() {
 			throw new Error('non-string failed');
 		});
 	});
+
+	it ('should report an error if it is given the string ..com', function(done) {
+		verja.validators.url('..com', true, function(valid) {
+			if (!valid) { return done(); }
+			throw new Error('non-string failed');
+		});
+	});
 });

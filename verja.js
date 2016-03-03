@@ -4,64 +4,6 @@
 
 	var validators = {
 		//takes lower case string of type for config
-		type: function(val, config, callback) {
-			var valtype = Object.prototype.toString.call(val);
-			valtype = valtype.substr(8, valtype.length - 9).toLowerCase();
-			if (valtype === config) {
-				return callback(true);
-			}
-			callback(false, 'type');
-		},
-		required: function(val, config, callback) {
-			if (config) {
-				if (!val || typeof val === undefined) {
-					return callback(false);
-				}
-			}
-			callback(true);
-		},
-		max: function(val, config, callback) {
-			if (typeof val !== 'number' || !val || val > config) {
-				return callback(false);
-			}
-			callback(true);
-		},
-		min: function(val, config, callback) {
-			if (typeof val !== 'number' || !val || val < config) {
-				return callback(false);
-			}
-			callback(true);
-		},
-		maxlength: function(val, config, callback) {
-			if (!val || !val.length || val.length > config) {
-				return callback(false);
-			}
-			callback(true);
-		},
-		minlength: function(val, config, callback) {
-			if (!val || !val.length || val.length < config) {
-				return callback(false);
-			}
-			callback(true);
-		},
-		int: function(val, config, callback) {
-			if (Math.round(val) === val) {
-				return callback(true);
-			}
-			callback(false);
-		},
-		equals: function(val, config, callback) {
-			if (val === config) {
-				return callback(true);
-			}
-			callback(false);
-		},
-		regex: function(val, config, callback) {
-			if (val.search(config) > -1) {
-				return callback(true);
-			}
-			callback(false);
-		},
 		email: function(val, config, callback) {
 			if (!val) return callback(true);
 			if (typeof val !== 'string') {
@@ -73,6 +15,69 @@
 				return callback(true);
 			}
 			callback(false);
+		},
+		equals: function(val, config, callback) {
+			if (val === config) {
+				return callback(true);
+			}
+			callback(false);
+		},
+		int: function(val, config, callback) {
+			if (Math.round(val) === val) {
+				return callback(true);
+			}
+			callback(false);
+		},
+		max: function(val, config, callback) {
+			if (typeof val !== 'number' || !val || val > config) {
+				return callback(false);
+			}
+			callback(true);
+		},
+		maxlength: function(val, config, callback) {
+			try {
+				if (val.length <= config) {
+					return callback(true);
+				} else {
+					return callback(false);
+				}
+			} catch (e) {
+				return callback(false);
+			}
+		},
+		min: function(val, config, callback) {
+			if (typeof val !== 'number' || !val || val < config) {
+				return callback(false);
+			}
+			callback(true);
+		},
+		minlength: function(val, config, callback) {
+			if (!val || !val.length || val.length < config) {
+				return callback(false);
+			}
+			callback(true);
+		},
+		regex: function(val, config, callback) {
+			if (val.search(config) > -1) {
+				return callback(true);
+			}
+			callback(false);
+		},
+		required: function(val, config, callback) {
+			if (config) {
+				if (!val || typeof val === undefined) {
+					return callback(false);
+				}
+			}
+			callback(true);
+		},
+		type: function(val, config, callback) {
+			var valtype = Object.prototype.toString.call(val);
+			valtype = valtype.substr(8, valtype.length - 9).toLowerCase();
+			if (valtype === config) {
+				return callback(true);
+			}
+			callback(false, 'type');
 		},
 		url: function(val, config, callback) {
 			var regex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)/;
@@ -98,7 +103,6 @@
 	}
 
 	function Schema(schema, userCallback) {
-		var self = this;
 		this.schema = schema;
 
 		this.errors = {};
@@ -129,7 +133,7 @@
 				});
 			}
 			//Add a validator for each one declared on the Field
-			Object.keys(schema).forEach(function(validatorName, index) {
+			Object.keys(schema).forEach(function(validatorName) {
 				if (validators[validatorName]) {
 					self.addValidationFunction(object, schema, errors, validatorName);
 				} else {

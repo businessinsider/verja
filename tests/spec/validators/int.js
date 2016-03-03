@@ -3,10 +3,6 @@ if (typeof require !== 'undefined') {
 }
 describe('int validation rule', function() {
 
-	var schema = {
-		key: new verja.Field({int: true})
-	};
-
 	it ('should confirm that a number is an integer', function(done) {
 		verja.validators.int(5,true,function(valid){
 			if (valid) { return done(); }

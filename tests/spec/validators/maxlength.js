@@ -3,11 +3,6 @@ if (typeof require !== 'undefined') {
 }
 describe('maxlength validation rule', function() {
 
-	var schema = {
-		key: new verja.Field({maxlength: 5})
-	};
-
-
 	it('string: should throw an error if it\'s over the max length', function(done) {
 		verja.validators.maxlength('some long error', 4, function(valid){
 			if (!valid) { return done(); }
@@ -50,10 +45,24 @@ describe('maxlength validation rule', function() {
 		});
 	});
 
+	it('an empty array should pass', function(done) {
+		verja.validators.maxlength([], 4, function(valid){
+			if (valid) { return done(); }
+			throw 'empty array failure';
+		});
+	});
+
 	it('should fail if not an array or string', function(done) {
 		verja.validators.maxlength({}, 4, function(valid){
 			if (!valid) { return done(); }
 			throw 'non-array/string failure';
+		});
+	});
+
+	it('should fail if not an array or string', function(done) {
+		verja.validators.maxlength(null, 4, function(valid){
+			if (!valid) { return done(); }
+			throw 'falsy failure';
 		});
 	});
 });

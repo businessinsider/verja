@@ -6,7 +6,6 @@ if (typeof require !== 'undefined') {
 
 describe('itemSchema validation rule', function() {
 
-
 	var obj = {
 		key: []
 	};

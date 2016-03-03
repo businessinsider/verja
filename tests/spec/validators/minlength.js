@@ -3,11 +3,6 @@ if (typeof require !== 'undefined') {
 }
 describe('minlength validation rule', function() {
 
-	var schema = {
-		key: new verja.Field({minlength: 5})
-	};
-
-
 	it('string: should throw an error if it\'s under the min length', function(done) {
 		verja.validators.minlength('so', 4, function(valid){
 			if (!valid) { return done(); }

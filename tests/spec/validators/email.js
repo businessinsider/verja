@@ -9,6 +9,20 @@ describe ('email validation rule', function() {
 		});
 	});
 
+	it ('should tell if a given string with a _ is an email', function(done) {
+		verja.validators.email('_@forrestalmasi.com', true, function(valid){
+			if (valid) { return done(); }
+			throw new Error('failed valid email validation');
+		});
+	});
+
+	it ('should tell if a given string with a + is an email', function(done) {
+		verja.validators.email('falmasi+test@businessinsider.com', true, function(valid){
+			if (valid) { return done(); }
+			throw new Error('failed valid email validation');
+		});
+	});
+
 	it ('should tell if a given string is not an email', function(done) {
 		verja.validators.email('falmasi//businessinsider.com', true, function(valid){
 			if (!valid) { return done(); }
