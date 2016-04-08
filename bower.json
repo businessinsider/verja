@@ -1,0 +1,33 @@
+{
+  "name": "verja",
+  "version": "0.0.1",
+  "description": "A schema based object validator",
+  "main": "verja.js",
+  "authors": [{
+    "name": "Forrest Almasi",
+    "email": "_@forrestalmasi.com",
+    "homepage": "http://www.forrestalmasi.com/"
+  }, {
+    "name": "Aaron Tidwell",
+    "email": "Aaron.Tidwell@gmail.com",
+    "homepage": "http://www.aarontidwell.com/"
+  }],
+  "license": "MIT",
+  "keywords": [
+    "validator",
+    "validation",
+    "schema",
+    "type",
+    "JSON",
+    "object"
+  ],
+  "homepage": "https://github.com/businessinsider/verja",
+  "moduleType": [
+    "node"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "tests"
+  ]
+}
