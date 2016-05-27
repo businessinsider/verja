@@ -1,7 +1,7 @@
 {
   "name": "verja",
   "version": "0.0.1",
-  "description": "A schema based object validator",
+  "description": "Business Insider's Declarative Object Validator",
   "main": "verja.js",
   "authors": [{
     "name": "Forrest Almasi",
