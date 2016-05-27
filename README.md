@@ -30,7 +30,7 @@ Or the browser
 	<script src="/verja.js" type="text/javascript"></script>
 ```
 
-A basic example of validating an object by declaring a schema, and calling the validate method
+A basic example of validating an object by declaring a schema and calling the validate method
 
 ```
 	var schema = {
@@ -50,11 +50,11 @@ Verja schemas support nested objects and arrays
 ```
 var schema = {
 	key: {
-			key2: new verja.Field({
-				itemSchema: new verja.Field({type: 'string'}),
-				minlength: 2
-			})
-			key3: new verja.Field({type: 'number', max: 100})
+		key2: new verja.Field({
+			itemSchema: new verja.Field({type: 'string'}),
+			minlength: 2
+		}),
+		key3: new verja.Field({type: 'number', max: 100})
 	},
 	key4: new verja.Field({required: true})
 };
@@ -64,23 +64,23 @@ The following validators are available:
 ```
 var schema = {
 	strings: new verja.Field({
-			maxlength: 5, 
-			minlength: 2, 
-			equals: 'a string to match',
-			regex: 'string or /pattern/',
-			email: true,
-			url: true
+		maxlength: 5, 
+		minlength: 2, 
+		equals: 'a string to match',
+		regex: 'string or /pattern/',
+		email: true,
+		url: true
 	}),
 	numbers: new verja.Field({
-			min: 1,
-			max: 5,
-			int: true,
-			equals: 3		
+		min: 1,
+		max: 5,
+		int: true,
+		equals: 3		
 	}),
 	everything: new verja.Field({
-			type: 'lowercase, string version of type',
-			required: true,
-			equals: 'this can also take an object pointer'
+		type: 'lowercase, string version of type',
+		required: true,
+		equals: 'this can also take an object pointer'
 	})
 };
 ```
