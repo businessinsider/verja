@@ -8,6 +8,14 @@ Built to support complex object structures, deeply nested arrays, and async vali
 
 ```git clone https://github.com/businessinsider/verja```
 
+or
+ 
+```npm install verja --save```
+
+or
+
+```bower install verja --save```
+
 
 ### Use
 Via node
