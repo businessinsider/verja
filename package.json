@@ -1,6 +1,6 @@
 {
   "name": "verja",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Business Insider's Declarative Object Validator",
   "license": "MIT",
   "scripts": {
