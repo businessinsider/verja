@@ -37,12 +37,14 @@ A basic example of validating an object by declaring a schema and calling the va
 		property: new verja.Field({type: 'string'})
 	};
 	var obj = {
-		property: 'some value'
+		property: 12345
 	};
 	verja.validate(obj, schema, function(err) {
-		if (err) { return console.log('invalid', err) }
+		if (err) { return console.log(err) }
 		return console.log('valid!');
 	});
+	
+	// logs { property: { type: true } }
 ```
 
 Verja schemas support nested objects and arrays
@@ -87,7 +89,7 @@ var schema = {
 
 You can add custom validators like this. Pass true to the callback if the field is valid, false if it is not.  All validators are assumed to be async so returning will not do anything, you must use the callback
 
-Config will be the value of the validator property on the Field object passed into the schema
+"val" here is the value of the field, "config" is the value of the validator property on the Field object passed into the schema. "callback" is an internal callback you cannot configure.
 
 ```
 verja.addValidator('isArray', function(val, config, callback) {
