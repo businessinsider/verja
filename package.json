@@ -1,6 +1,6 @@
 {
   "name": "verja",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Business Insider's Declarative Object Validator",
   "license": "MIT",
   "scripts": {
@@ -16,15 +16,18 @@
     "url": "https://github.com/businessinsider/verja/issues"
   },
   "main": "verja.js",
-  "contributors": [{
-    "name": "Forrest Almasi",
-    "email": "_@forrestalmasi.com",
-    "url": "http://www.forrestalmasi.com/"
-  }, {
-    "name": "Aaron Tidwell",
-    "email": "Aaron.Tidwell@gmail.com",
-    "url": "http://www.aarontidwell.com/"
-  }],
+  "contributors": [
+    {
+      "name": "Forrest Almasi",
+      "email": "_@forrestalmasi.com",
+      "url": "http://www.forrestalmasi.com/"
+    },
+    {
+      "name": "Aaron Tidwell",
+      "email": "Aaron.Tidwell@gmail.com",
+      "url": "http://www.aarontidwell.com/"
+    }
+  ],
   "keywords": [
     "validator",
     "validation",
