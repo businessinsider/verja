@@ -22,6 +22,16 @@
 			}
 			callback(false);
 		},
+		hasLowercaseLetter: function(val, config, callback) {
+			var regex = /[a-z]/;
+			if (regex.test(val)) return callback(true);
+			callback(false)
+		},
+		hasCapitalLetter: function(val, config, callback) {
+			var regex = /[A-Z]/;
+			if (regex.test(val)) return callback(true);
+			callback(false)
+		},
 		int: function(val, config, callback) {
 			if (Math.round(val) === val) {
 				return callback(true);
@@ -80,7 +90,7 @@
 			callback(false, 'type');
 		},
 		url: function(val, config, callback) {
-			var regex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)/;
+			var regex = /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)/;
 
 			if (regex.test(val) || !val) {
 				return callback(true);
