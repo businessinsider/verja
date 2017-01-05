@@ -71,7 +71,9 @@ var schema = {
 		equals: 'a string to match',
 		regex: 'string or /pattern/',
 		email: true,
-		url: true
+		url: true,
+		hasLowerCaseLetter: true,
+		hasCapitalLetter: true
 	}),
 	numbers: new verja.Field({
 		min: 1,
