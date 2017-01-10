@@ -24,13 +24,14 @@
 		},
 		hasLowercaseLetter: function(val, config, callback) {
 			var regex = /[a-z]/;
-			if (regex.test(val)) return callback(true);
-			callback(false)
+			if (regex.test(val)) return callback(config);
+			callback(!config);
 		},
 		hasCapitalLetter: function(val, config, callback) {
+			console.log('config', config)
 			var regex = /[A-Z]/;
-			if (regex.test(val)) return callback(true);
-			callback(false)
+			if (regex.test(val)) return callback(config);
+			callback(!config);
 		},
 		int: function(val, config, callback) {
 			if (Math.round(val) === val) {
