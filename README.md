@@ -73,7 +73,8 @@ var schema = {
 		email: true,
 		url: true,
 		hasLowerCaseLetter: true,
-		hasCapitalLetter: true
+		hasCapitalLetter: true,
+		hasNumber: true
 	}),
 	numbers: new verja.Field({
 		min: 1,

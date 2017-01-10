@@ -9,7 +9,7 @@ describe('hasLowercaseLetter', function() {
 			if (valid) {
 				return done();
 			}
-			throw new Error(x + ' has no lowercase letter;');
+			throw new Error(x + ' has no lowercase letter');
 		});
 	});
 
@@ -19,7 +19,7 @@ describe('hasLowercaseLetter', function() {
 			if (!valid) {
 				return done();
 			}
-			throw new Error(x + ' has no lowercase letter;');
+			throw new Error(x + ' has no lowercase letter');
 		});
 	});
 
@@ -29,7 +29,7 @@ describe('hasLowercaseLetter', function() {
 			if (valid) {
 				return done();
 			}
-			throw new Error(x + ' has no lowercase letter;');
+			throw new Error(x + ' has no lowercase letter');
 		});
 	});
 
@@ -39,7 +39,7 @@ describe('hasLowercaseLetter', function() {
 			if (!valid) {
 				return done();
 			}
-			throw new Error(x + ' has no lowercase letter;');
+			throw new Error(x + ' has no lowercase letter');
 		});
 	});
 

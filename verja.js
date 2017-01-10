@@ -28,8 +28,12 @@
 			callback(!config);
 		},
 		hasCapitalLetter: function(val, config, callback) {
-			console.log('config', config)
 			var regex = /[A-Z]/;
+			if (regex.test(val)) return callback(config);
+			callback(!config);
+		},
+		hasNumber: function(val, config, callback) {
+			var regex = /[0-9]/;
 			if (regex.test(val)) return callback(config);
 			callback(!config);
 		},

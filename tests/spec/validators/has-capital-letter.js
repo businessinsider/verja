@@ -9,7 +9,7 @@ describe('hasCapitalLetter', function() {
 			if (valid) {
 				return done();
 			}
-			throw new Error(x + ' has no capital letter;');
+			throw new Error(x + ' has no capital letter');
 		});
 	});
 
@@ -19,7 +19,7 @@ describe('hasCapitalLetter', function() {
 			if (!valid) {
 				return done();
 			}
-			throw new Error(x + ' has no capital letter;');
+			throw new Error(x + ' has no capital letter');
 		});
 	});
 
@@ -29,7 +29,7 @@ describe('hasCapitalLetter', function() {
 			if (valid) {
 				return done();
 			}
-			throw new Error(x + ' has no capital letter;');
+			throw new Error(x + ' has no capital letter');
 		});
 	});
 
@@ -39,7 +39,7 @@ describe('hasCapitalLetter', function() {
 			if (!valid) {
 				return done();
 			}
-			throw new Error(x + ' has no lowercase letter;');
+			throw new Error(x + ' has no lowercase letter');
 		});
 	});
 
