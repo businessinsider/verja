@@ -3,6 +3,19 @@
 	'use strict';
 
 	var validators = {
+		doesNotHave: function(val, config, callback) {
+			if (!val) return callback(true);
+			var returnVal = true;
+			if (Array.isArray(config)) {
+				config.forEach(function(item) {
+					if (val.indexOf(item) > -1) returnVal = false;
+				});
+			} else {
+				if (val.indexOf(config) > -1) returnVal = false;
+			}
+			return callback(returnVal);
+		},
+
 		//takes lower case string of type for config
 		email: function(val, config, callback) {
 			if (!val) return callback(true);
