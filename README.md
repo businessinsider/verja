@@ -54,7 +54,8 @@ var schema = {
 	key: {
 		key2: new verja.Field({
 			itemSchema: new verja.Field({type: 'string'}),
-			minlength: 2
+			minlength: 2,
+			doesNotHave: 'thisStringMember'
 		}),
 		key3: new verja.Field({type: 'number', max: 100})
 	},
@@ -74,7 +75,8 @@ var schema = {
 		url: true,
 		hasLowerCaseLetter: true,
 		hasCapitalLetter: true,
-		hasNumber: true
+		hasNumber: true,
+		doesNotHave: ['aString', 'anotherString']
 	}),
 	numbers: new verja.Field({
 		min: 1,
